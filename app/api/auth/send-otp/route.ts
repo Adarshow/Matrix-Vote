@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server"
 import nodemailer from "nodemailer"
 import { prisma } from "@/lib/prisma"
-
-// Store OTPs temporarily (in production, use Redis or database)
-const otpStore = new Map<string, { otp: string; expiresAt: number }>()
+import { otpStore } from "@/lib/otpstore"
 
 export async function POST(req: Request) {
   try {
@@ -104,5 +102,4 @@ export async function POST(req: Request) {
   }
 }
 
-// Export the OTP store for verification
-export { otpStore }
+
