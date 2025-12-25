@@ -1,4 +1,4 @@
-# White Matrix Online Voting Platform
+# Matrix Vote: Online Voting Platform
 
 ## 📋 Project Overview
 
@@ -24,7 +24,7 @@ A secure, production-ready online voting platform built for the White Matrix Int
 - **Results Dashboard**
   - Live vote count updates (every 5 seconds)
   - Visual progress bars with percentages
-  - Current leader display with trophy icon
+  - Current leader display 
   - Complete voters list with LinkedIn links
   - Vote timestamp tracking
 
@@ -123,12 +123,20 @@ white-matrix-voting/
 - PostgreSQL database (local or cloud)
 - Google OAuth credentials (optional)
 - LinkedIn OAuth credentials (optional)
+- Gmail Credentials
+  How to get a Gmail App Password:
+    1. Go to your Google Account settings
+    2. Enable 2-Step Verification if not already enabled
+    3. Visit https://myaccount.google.com/apppasswords
+    4. Select "Mail" and "Other (Custom name)", enter "White Matrix"
+    5. Copy the 16-character password (no spaces)
+    6. Paste it as GMAIL_PASS in .env
 
 ### Installation
 
 1. **Clone or navigate to the project**
    ```bash
-   cd "c:\Users\User\Desktop\White Matrix"
+   cd "PROJECT ROOT FOLDER"
    ```
 
 2. **Install dependencies**
@@ -154,6 +162,8 @@ white-matrix-voting/
    GOOGLE_CLIENT_SECRET=""
    LINKEDIN_CLIENT_ID=""
    LINKEDIN_CLIENT_SECRET=""
+   GMAIL_USER=
+   GMAIL_PASS=
    ```
 
 4. **Set up the database**
@@ -251,77 +261,6 @@ white-matrix-voting/
 - Error handling
 - Success feedback
 
-## 📦 Deployment
-
-### Deploy to Vercel
-
-1. **Push to GitHub**
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit"
-   git push origin main
-   ```
-
-2. **Import to Vercel**
-   - Go to [Vercel](https://vercel.com)
-   - Import your repository
-   - Add environment variables
-   - Deploy
-
-3. **Set up production database**
-   - Use Neon, Supabase, or Railway
-   - Update `DATABASE_URL` in Vercel
-   - Run migrations: `npx prisma db push`
-   - Seed database: `npm run db:seed`
-
-4. **Update OAuth URLs**
-   - Add production URLs to Google/LinkedIn OAuth settings
-   - Update `NEXTAUTH_URL` to your Vercel domain
-
-## 🧪 Testing
-
-### Manual Testing Checklist
-- [ ] Register new user
-- [ ] Login with credentials
-- [ ] Login with Google (if configured)
-- [ ] Login with LinkedIn (if configured)
-- [ ] Vote for candidate
-- [ ] Verify cannot vote twice
-- [ ] Check results page
-- [ ] Verify LinkedIn links work
-- [ ] Test dark mode
-- [ ] Test mobile responsiveness
-- [ ] Test forgot password flow
-
-## 📝 Scripts
-
-```bash
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run start        # Start production server
-npm run lint         # Run ESLint
-npm run db:seed      # Seed database with candidates
-npx prisma studio    # Open Prisma Studio (database GUI)
-npx prisma db push   # Sync schema to database
-```
-
-## 🐛 Troubleshooting
-
-### Database Connection Issues
-- Verify `DATABASE_URL` is correct
-- Ensure PostgreSQL is running
-- Check network connectivity
-
-### OAuth Not Working
-- Verify Client IDs and Secrets
-- Check redirect URLs match exactly
-- Ensure OAuth apps are enabled
-
-### Build Errors
-- Delete `.next` folder and rebuild
-- Run `npm install` again
-- Clear node_modules and reinstall
 
 ## 📄 License
 
