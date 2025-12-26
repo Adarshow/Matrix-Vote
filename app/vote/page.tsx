@@ -45,8 +45,8 @@ export default function VotePage() {
   const fetchData = async () => {
     try {
       const [candidatesRes, voteStatusRes] = await Promise.all([
-        fetch("/api/candidates"),
-        fetch("/api/vote"),
+        fetch("/api/candidates", { cache: "no-store" }),
+        fetch("/api/vote", { cache: "no-store" }),
       ])
 
       const candidatesData = await candidatesRes.json()
