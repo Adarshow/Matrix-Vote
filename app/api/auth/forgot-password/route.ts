@@ -35,7 +35,7 @@ export async function POST(req: Request) {
 
     // Send email
     await transporter.sendMail({
-      from: process.env.GMAIL_USER,
+      from: `"Matrix Vote" <${process.env.GMAIL_USER}>`,
       to: email,
       subject: "Matrix Vote - Password Reset Request",
       html: `
