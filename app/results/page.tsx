@@ -57,8 +57,8 @@ export default function ResultsPage() {
   const fetchData = async () => {
     try {
       const [candidatesRes, votersRes] = await Promise.all([
-        fetch("/api/candidates"),
-        fetch("/api/voters"),
+         fetch("/api/candidates", { cache: "no-store" }),
+         fetch("/api/voters", { cache: "no-store" }),
       ])
 
       const candidatesData = await candidatesRes.json()

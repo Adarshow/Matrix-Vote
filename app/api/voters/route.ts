@@ -1,14 +1,16 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 
+export const dynamic = "force-dynamic" 
+
 export async function GET() {
   try {
     const voters = await prisma.user.findMany({
       where: { 
         hasVoted: true,
         vote: {
-          isNot: null
-        }
+          isNot: null,
+        },
       },
       select: {
         id: true,
@@ -26,10 +28,18 @@ export async function GET() {
           },
         },
       },
-      orderBy: { vote: { createdAt: "desc" } },
+      orderBy: {
+        vote: {
+          createdAt: "desc",
+        },
+      },
     })
 
-    return NextResponse.json(voters)
+    return NextResponse.json(voters, {
+      headers: {
+        "Cache-Control": "no-store", 
+      },
+    })
   } catch (error) {
     console.error("Voters fetch error:", error)
     return NextResponse.json(
