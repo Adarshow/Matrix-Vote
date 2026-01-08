@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function CompleteProfile() {
-  const { data: session, status } = useSession()
+  const { data: session, status, update } = useSession()
   const router = useRouter()
   const [linkedinUrl, setLinkedinUrl] = useState("")
   const [loading, setLoading] = useState(false)
@@ -56,8 +56,13 @@ export default function CompleteProfile() {
         throw new Error(data.error || "Failed to update profile")
       }
 
-      // Force a hard redirect to refresh the session
-      window.location.href = "/vote"
+      // Update the session to refresh the JWT token with new linkedinUrl
+      await update()
+      
+      // Small delay to ensure session is updated, then redirect
+      setTimeout(() => {
+        router.push("/vote")
+      }, 500)
     } catch (error: any) {
       console.error("Error updating LinkedIn URL:", error)
       setError(error.message || "Something went wrong. Please try again.")
@@ -67,7 +72,7 @@ export default function CompleteProfile() {
 
   if (status === "loading") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-gray-600">Loading...</p>
@@ -77,29 +82,31 @@ export default function CompleteProfile() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <Card className="w-full max-w-lg bg-white shadow-xl border-0 rounded-2xl overflow-hidden">
-        {/* Header with gradient */}
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-8 text-white">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
+      <Card className="w-full max-w-lg bg-white shadow-lg border border-gray-200 rounded-xl overflow-hidden">
+        {/* Header with solid blue */}
+        <div className="bg-blue-600 p-8 text-white">
           <div className="flex items-center justify-center mb-4">
-            <svg 
-              className="w-16 h-16" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={2} 
-                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" 
-              />
-            </svg>
+            <div className="bg-white/10 p-4 rounded-full backdrop-blur-sm">
+              <svg 
+                className="w-12 h-12" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth={2} 
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" 
+                />
+              </svg>
+            </div>
           </div>
           <CardTitle className="text-3xl font-bold text-center mb-2">
             Complete Your Profile
           </CardTitle>
-          <CardDescription className="text-center text-blue-100 text-base">
+          <CardDescription className="text-center text-blue-50 text-base">
             We need your LinkedIn profile to verify your identity
           </CardDescription>
         </div>
@@ -149,7 +156,7 @@ export default function CompleteProfile() {
 
             <Button 
               type="submit" 
-              className="w-full h-12 text-base font-semibold bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed" 
+              className="w-full h-12 text-base font-semibold bg-blue-600 hover:bg-blue-700 transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed" 
               disabled={loading}
             >
               {loading ? (

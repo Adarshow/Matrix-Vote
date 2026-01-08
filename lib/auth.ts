@@ -93,12 +93,28 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
-    async jwt({ token, user, account }) {
+    async jwt({ token, user, account, trigger }) {
       if (user) {
         token.id = user.id
         token.linkedinUrl = user.linkedinUrl
         token.provider = account?.provider || "credentials"
       }
+      
+      // Refresh user data from database on every request to get updated linkedinUrl
+      if (trigger === "update" || !token.linkedinUrl) {
+        if (token.email) {
+          const dbUser = await prisma.user.findUnique({
+            where: { email: token.email as string },
+            select: { id: true, linkedinUrl: true, provider: true },
+          })
+          if (dbUser) {
+            token.id = dbUser.id
+            token.linkedinUrl = dbUser.linkedinUrl
+            token.provider = dbUser.provider || token.provider
+          }
+        }
+      }
+      
       return token
     },
     async session({ session, token }) {
