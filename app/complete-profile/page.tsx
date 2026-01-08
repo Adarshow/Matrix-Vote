@@ -193,7 +193,7 @@ export default function CompleteProfile() {
         </div>
         
         <div className="flex-1 flex items-center justify-center p-6 sm:p-8">
-        <div className="w-full max-w-md">
+          <div className="w-full max-w-md">
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
               Verify Your LinkedIn Profile
