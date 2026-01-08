@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     console.log(`Updating LinkedIn URL for user: ${session.user.email}`)
 
     // Check if LinkedIn URL is already used by another account
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await prisma.user.findFirst({
       where: { linkedinUrl: validatedData.linkedinUrl },
     })
 

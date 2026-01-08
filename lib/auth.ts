@@ -133,7 +133,7 @@ export const authOptions: NextAuthOptions = {
 
         // Check if LinkedIn URL is already used by another account
         if (account.provider === "linkedin" && user.linkedinUrl) {
-          const existingLinkedInUser = await prisma.user.findUnique({
+          const existingLinkedInUser = await prisma.user.findFirst({
             where: { linkedinUrl: user.linkedinUrl },
           })
 
