@@ -131,6 +131,18 @@ export const authOptions: NextAuthOptions = {
           where: { email: user.email || "" },
         })
 
+        // Check if LinkedIn URL is already used by another account
+        if (account.provider === "linkedin" && user.linkedinUrl) {
+          const existingLinkedInUser = await prisma.user.findUnique({
+            where: { linkedinUrl: user.linkedinUrl },
+          })
+
+          if (existingLinkedInUser && existingLinkedInUser.email !== user.email) {
+            console.error(`LinkedIn URL already in use: ${user.linkedinUrl}`)
+            return "/login?error=linkedin_already_linked"
+          }
+        }
+
         if (existingUser) {
           await prisma.user.update({
             where: { email: user.email || "" },

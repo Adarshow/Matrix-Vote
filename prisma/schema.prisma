@@ -14,7 +14,7 @@ model User {
   emailVerified DateTime?
   password      String?
   image         String?
-  linkedinUrl   String?
+  linkedinUrl   String?   @unique
   provider      String?
   hasVoted      Boolean   @default(false)
   createdAt     DateTime  @default(now())

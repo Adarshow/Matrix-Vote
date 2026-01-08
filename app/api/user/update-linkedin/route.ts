@@ -29,6 +29,19 @@ export async function POST(req: Request) {
 
     console.log(`Updating LinkedIn URL for user: ${session.user.email}`)
 
+    // Check if LinkedIn URL is already used by another account
+    const existingUser = await prisma.user.findUnique({
+      where: { linkedinUrl: validatedData.linkedinUrl },
+    })
+
+    if (existingUser && existingUser.email !== session.user.email) {
+      console.error(`LinkedIn URL already in use: ${validatedData.linkedinUrl}`)
+      return NextResponse.json(
+        { error: "This LinkedIn profile is already linked to another account. Please use a different LinkedIn profile." },
+        { status: 409 }
+      )
+    }
+
     // Update user's LinkedIn URL
     const updatedUser = await prisma.user.update({
       where: { email: session.user.email },
@@ -48,6 +61,14 @@ export async function POST(req: Request) {
       return NextResponse.json(
         { error: error.errors[0].message },
         { status: 400 }
+      )
+    }
+
+    // Handle unique constraint violation from database
+    if (error.code === "P2002" && error.meta?.target?.includes("linkedinUrl")) {
+      return NextResponse.json(
+        { error: "This LinkedIn profile is already linked to another account. Please use a different LinkedIn profile." },
+        { status: 409 }
       )
     }
 
