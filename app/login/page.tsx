@@ -96,11 +96,33 @@ function LoginForm() {
         </div>
       </div>
 
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-white dark:bg-gray-900">
-        <div className="lg:hidden absolute top-4 right-4 z-50">
+      <div className="w-full lg:w-1/2 flex flex-col bg-white dark:bg-gray-900">
+        {/* Mobile Header */}
+        <div className="lg:hidden w-full px-6 py-4 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 via-blue-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg">
+                <svg viewBox="0 0 24 24" fill="white" className="w-6 h-6">
+                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                </svg>
+              </div>
+              <div>
+                <h1 className="text-lg font-bold bg-gradient-to-r from-indigo-600 to-blue-600 dark:from-indigo-400 dark:to-blue-400 bg-clip-text text-transparent">
+                  Matrix Vote
+                </h1>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Voting Platform</p>
+              </div>
+            </div>
+            <ThemeToggle />
+          </div>
+        </div>
+
+        {/* Desktop Theme Toggle */}
+        <div className="hidden lg:block absolute top-4 right-4 z-50">
           <ThemeToggle />
         </div>
         
+        <div className="flex-1 flex items-center justify-center p-6 sm:p-8">
         <div className="w-full max-w-md">
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
@@ -218,6 +240,7 @@ function LoginForm() {
               Forget password? <span className="font-semibold underline">Click here</span>
             </Link>
           </div>
+        </div>
         </div>
       </div>
     </div>

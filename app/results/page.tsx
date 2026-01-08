@@ -122,7 +122,11 @@ export default function ResultsPage() {
     )
   }
 
-  const winner = candidates.length > 0 ? candidates[0] : null
+  // Check for ties - find all candidates with the highest vote count
+  const maxVotes = candidates.length > 0 ? Math.max(...candidates.map(c => c.voteCount)) : 0
+  const winners = candidates.filter(c => c.voteCount === maxVotes && maxVotes > 0)
+  const isTie = winners.length > 1
+  const winner = winners.length === 1 ? winners[0] : null
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-900">
@@ -248,7 +252,38 @@ export default function ResultsPage() {
               </div>
             </CardHeader>
             <CardContent className="pt-0 relative z-10">
-              {winner && winner.voteCount > 0 ? (
+              {isTie ? (
+                <div className="text-center py-6">
+                  <div className="flex items-center justify-center gap-2 mb-4">
+                    {winners.slice(0, 3).map((w, idx) => (
+                      <div key={w.id} className={`relative ${idx === 1 ? 'z-20 scale-110' : idx === 0 ? 'z-10' : 'z-0'}`}>
+                        <div className="relative w-16 h-16 rounded-full overflow-hidden bg-white ring-4 ring-purple-400 shadow-xl">
+                          <Image
+                            src={w.image}
+                            alt={w.name}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/40 dark:to-pink-900/40 rounded-full mb-3">
+                    <Trophy className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                    <span className="text-lg font-bold text-purple-700 dark:text-purple-300">It's a Tie!</span>
+                  </div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                    {winners.length} candidates are tied with {maxVotes} vote{maxVotes !== 1 ? 's' : ''} each
+                  </p>
+                  <div className="flex flex-wrap gap-2 justify-center mt-4">
+                    {winners.map((w) => (
+                      <span key={w.id} className="px-3 py-1 bg-white dark:bg-gray-800 rounded-full text-sm font-medium text-gray-700 dark:text-gray-300 border border-purple-200 dark:border-purple-800">
+                        {w.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ) : winner && winner.voteCount > 0 ? (
                 <div className="flex items-center gap-5">
                   <div className="relative">
                     <div className="absolute inset-0 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full blur-md opacity-50 animate-pulse"></div>
