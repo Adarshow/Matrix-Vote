@@ -199,39 +199,39 @@ export default function ResultsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Card className="group relative overflow-hidden bg-gradient-to-br from-blue-600 to-indigo-600 dark:from-blue-700 dark:to-indigo-700 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
             <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            <CardContent className="pt-6 pb-6 relative z-10">
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-14 h-14 bg-white/20 backdrop-blur-xl rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                  <Vote className="w-7 h-7 text-white" />
+            <CardContent className="pt-6 pb-6 lg:pt-8 lg:pb-8 relative z-10">
+              <div className="flex items-start justify-between mb-4 lg:mb-6">
+                <div className="w-14 h-14 lg:w-16 lg:h-16 bg-white/20 backdrop-blur-xl rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <Vote className="w-7 h-7 lg:w-8 lg:h-8 text-white" />
                 </div>
                 <div className="flex items-center gap-1 px-3 py-1 bg-white/20 backdrop-blur-xl rounded-full">
                   <TrendingUp className="w-3 h-3 text-white" />
                   <span className="text-xs font-semibold text-white">Live</span>
                 </div>
               </div>
-              <div className="text-4xl font-bold text-white mb-1 tracking-tight">
+              <div className="text-4xl lg:text-5xl font-bold text-white mb-1 lg:mb-2 tracking-tight">
                 {totalVotes.toLocaleString()}
               </div>
-              <div className="text-blue-100 text-sm font-medium">Total Votes Cast</div>
+              <div className="text-blue-100 text-sm lg:text-base font-medium">Total Votes Cast</div>
             </CardContent>
           </Card>
 
           <Card className="group relative overflow-hidden bg-gradient-to-br from-emerald-600 to-teal-600 dark:from-emerald-700 dark:to-teal-700 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
             <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            <CardContent className="pt-6 pb-6 relative z-10">
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-14 h-14 bg-white/20 backdrop-blur-xl rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                  <Users className="w-7 h-7 text-white" />
+            <CardContent className="pt-6 pb-6 lg:pt-8 lg:pb-8 relative z-10">
+              <div className="flex items-start justify-between mb-4 lg:mb-6">
+                <div className="w-14 h-14 lg:w-16 lg:h-16 bg-white/20 backdrop-blur-xl rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <Users className="w-7 h-7 lg:w-8 lg:h-8 text-white" />
                 </div>
                 <div className="flex items-center gap-1 px-3 py-1 bg-white/20 backdrop-blur-xl rounded-full">
                   <Activity className="w-3 h-3 text-white" />
                   <span className="text-xs font-semibold text-white">Active</span>
                 </div>
               </div>
-              <div className="text-4xl font-bold text-white mb-1 tracking-tight">
+              <div className="text-4xl lg:text-5xl font-bold text-white mb-1 lg:mb-2 tracking-tight">
                 {candidates.length.toLocaleString()}
               </div>
-              <div className="text-emerald-100 text-sm font-medium">Total Candidates</div>
+              <div className="text-emerald-100 text-sm lg:text-base font-medium">Total Candidates</div>
             </CardContent>
           </Card>
 
@@ -354,24 +354,24 @@ export default function ResultsPage() {
                     return (
                       <div 
                         key={candidate.id} 
-                        className="group relative bg-gradient-to-br from-gray-50 to-gray-100/50 dark:from-gray-700/30 dark:to-gray-800/30 rounded-2xl p-5 hover:shadow-lg transition-all duration-300 border border-gray-200/50 dark:border-gray-700/50 hover:border-gray-300 dark:hover:border-gray-600"
+                        className="group relative bg-gradient-to-br from-gray-50 to-gray-100/50 dark:from-gray-700/30 dark:to-gray-800/30 rounded-2xl p-4 md:p-5 hover:shadow-lg transition-all duration-300 border border-gray-200/50 dark:border-gray-700/50 hover:border-gray-300 dark:hover:border-gray-600"
                       >
                         {index === 0 && (
                           <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg animate-bounce">
                             <Trophy className="w-4 h-4 text-white" />
                           </div>
                         )}
-                        <div className="flex items-center gap-4 mb-4">
-                          <div className={`relative w-14 h-14 ${
-                            index === 0 ? 'bg-gradient-to-br from-yellow-400 via-amber-400 to-orange-500 shadow-lg shadow-yellow-500/50' : 
-                            index === 1 ? 'bg-gradient-to-br from-gray-300 via-gray-400 to-gray-500 shadow-lg shadow-gray-500/50' : 
-                            index === 2 ? 'bg-gradient-to-br from-orange-400 via-amber-600 to-orange-700 shadow-lg shadow-orange-500/50' : 
-                            'bg-gradient-to-br from-blue-400 to-indigo-500 shadow-md'
-                          } rounded-2xl flex items-center justify-center font-bold text-white text-xl transition-transform duration-300 group-hover:scale-110`}>
-                            #{index + 1}
-                          </div>
-                          <div className="flex-1 flex items-center gap-3 min-w-0">
-                            <div className="relative w-12 h-12 rounded-xl overflow-hidden ring-2 ring-white dark:ring-gray-800 shadow-md">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+                          <div className="flex items-center gap-3 sm:gap-4">
+                            <div className={`relative w-12 h-12 sm:w-14 sm:h-14 ${
+                              index === 0 ? 'bg-gradient-to-br from-yellow-400 via-amber-400 to-orange-500 shadow-lg shadow-yellow-500/50' : 
+                              index === 1 ? 'bg-gradient-to-br from-gray-300 via-gray-400 to-gray-500 shadow-lg shadow-gray-500/50' : 
+                              index === 2 ? 'bg-gradient-to-br from-orange-400 via-amber-600 to-orange-700 shadow-lg shadow-orange-500/50' : 
+                              'bg-gradient-to-br from-blue-400 to-indigo-500 shadow-md'
+                            } rounded-xl sm:rounded-2xl flex items-center justify-center font-bold text-white text-lg sm:text-xl transition-transform duration-300 group-hover:scale-110`}>
+                              #{index + 1}
+                            </div>
+                            <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden ring-2 ring-white dark:ring-gray-800 shadow-md">
                               <Image
                                 src={candidate.image}
                                 alt={candidate.name}
@@ -380,23 +380,25 @@ export default function ResultsPage() {
                               />
                             </div>
                             <div className="flex-1 min-w-0">
-                              <h3 className="font-bold text-lg text-gray-900 dark:text-white truncate">{candidate.name}</h3>
+                              <h3 className="font-bold text-base sm:text-lg text-gray-900 dark:text-white truncate">{candidate.name}</h3>
                               <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{candidate.bio}</p>
                             </div>
                           </div>
-                          <button
-                            onClick={() => window.open(candidate.linkedinUrl, "_blank")}
-                            className="flex-shrink-0 w-10 h-10 bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-600 dark:hover:bg-blue-600 rounded-xl flex items-center justify-center transition-all duration-300 group/btn hover:shadow-lg"
-                          >
-                            <Linkedin className="w-5 h-5 text-blue-600 group-hover/btn:text-white dark:text-blue-400 transition-colors" />
-                          </button>
-                          <div className="flex-shrink-0 text-right min-w-[80px]">
-                            <div className="text-2xl font-bold text-gray-900 dark:text-white">
-                              {candidate.voteCount.toLocaleString()}
+                          <div className="flex items-center gap-2 sm:gap-3 justify-between sm:justify-end ml-auto">
+                            <div className="text-right">
+                              <div className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+                                {candidate.voteCount.toLocaleString()}
+                              </div>
+                              <div className="text-xs text-gray-500 dark:text-gray-400 font-medium">
+                                votes
+                              </div>
                             </div>
-                            <div className="text-xs text-gray-500 dark:text-gray-400 font-medium">
-                              votes
-                            </div>
+                            <button
+                              onClick={() => window.open(candidate.linkedinUrl, "_blank")}
+                              className="flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-600 dark:hover:bg-blue-600 rounded-xl flex items-center justify-center transition-all duration-300 group/btn hover:shadow-lg"
+                            >
+                              <Linkedin className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 group-hover/btn:text-white dark:text-blue-400 transition-colors" />
+                            </button>
                           </div>
                         </div>
                         <div className="space-y-2">
