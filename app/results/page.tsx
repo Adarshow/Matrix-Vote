@@ -361,17 +361,18 @@ export default function ResultsPage() {
                             <Trophy className="w-4 h-4 text-white" />
                           </div>
                         )}
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
-                          <div className="flex items-center gap-3 sm:gap-4">
-                            <div className={`relative w-12 h-12 sm:w-14 sm:h-14 ${
+                        {/* Mobile Layout */}
+                        <div className="flex md:hidden flex-col gap-3 mb-3">
+                          <div className="flex items-center gap-3">
+                            <div className={`relative w-12 h-12 ${
                               index === 0 ? 'bg-gradient-to-br from-yellow-400 via-amber-400 to-orange-500 shadow-lg shadow-yellow-500/50' : 
                               index === 1 ? 'bg-gradient-to-br from-gray-300 via-gray-400 to-gray-500 shadow-lg shadow-gray-500/50' : 
                               index === 2 ? 'bg-gradient-to-br from-orange-400 via-amber-600 to-orange-700 shadow-lg shadow-orange-500/50' : 
                               'bg-gradient-to-br from-blue-400 to-indigo-500 shadow-md'
-                            } rounded-xl sm:rounded-2xl flex items-center justify-center font-bold text-white text-lg sm:text-xl transition-transform duration-300 group-hover:scale-110`}>
+                            } rounded-xl flex items-center justify-center font-bold text-white text-lg transition-transform duration-300 group-hover:scale-110`}>
                               #{index + 1}
                             </div>
-                            <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden ring-2 ring-white dark:ring-gray-800 shadow-md">
+                            <div className="relative w-12 h-12 rounded-xl overflow-hidden ring-2 ring-white dark:ring-gray-800 shadow-md">
                               <Image
                                 src={candidate.image}
                                 alt={candidate.name}
@@ -380,13 +381,13 @@ export default function ResultsPage() {
                               />
                             </div>
                             <div className="flex-1 min-w-0">
-                              <h3 className="font-bold text-base sm:text-lg text-gray-900 dark:text-white truncate">{candidate.name}</h3>
+                              <h3 className="font-bold text-base text-gray-900 dark:text-white truncate">{candidate.name}</h3>
                               <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{candidate.bio}</p>
                             </div>
                           </div>
-                          <div className="flex items-center gap-2 sm:gap-3 justify-between sm:justify-end ml-auto">
-                            <div className="text-right">
-                              <div className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+                          <div className="flex items-center gap-2 justify-between">
+                            <div className="text-left">
+                              <div className="text-xl font-bold text-gray-900 dark:text-white">
                                 {candidate.voteCount.toLocaleString()}
                               </div>
                               <div className="text-xs text-gray-500 dark:text-gray-400 font-medium">
@@ -395,10 +396,47 @@ export default function ResultsPage() {
                             </div>
                             <button
                               onClick={() => window.open(candidate.linkedinUrl, "_blank")}
-                              className="flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-600 dark:hover:bg-blue-600 rounded-xl flex items-center justify-center transition-all duration-300 group/btn hover:shadow-lg"
+                              className="flex-shrink-0 w-9 h-9 bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-600 dark:hover:bg-blue-600 rounded-xl flex items-center justify-center transition-all duration-300 group/btn hover:shadow-lg"
                             >
-                              <Linkedin className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 group-hover/btn:text-white dark:text-blue-400 transition-colors" />
+                              <Linkedin className="w-4 h-4 text-blue-600 group-hover/btn:text-white dark:text-blue-400 transition-colors" />
                             </button>
+                          </div>
+                        </div>
+                        {/* Desktop Layout */}
+                        <div className="hidden md:flex items-center gap-4 mb-4">
+                          <div className={`relative w-14 h-14 ${
+                            index === 0 ? 'bg-gradient-to-br from-yellow-400 via-amber-400 to-orange-500 shadow-lg shadow-yellow-500/50' : 
+                            index === 1 ? 'bg-gradient-to-br from-gray-300 via-gray-400 to-gray-500 shadow-lg shadow-gray-500/50' : 
+                            index === 2 ? 'bg-gradient-to-br from-orange-400 via-amber-600 to-orange-700 shadow-lg shadow-orange-500/50' : 
+                            'bg-gradient-to-br from-blue-400 to-indigo-500 shadow-md'
+                          } rounded-2xl flex items-center justify-center font-bold text-white text-xl transition-transform duration-300 group-hover:scale-110`}>
+                            #{index + 1}
+                          </div>
+                          <div className="relative w-12 h-12 rounded-xl overflow-hidden ring-2 ring-white dark:ring-gray-800 shadow-md flex-shrink-0">
+                            <Image
+                              src={candidate.image}
+                              alt={candidate.name}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-bold text-lg text-gray-900 dark:text-white truncate">{candidate.name}</h3>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{candidate.bio}</p>
+                          </div>
+                          <button
+                            onClick={() => window.open(candidate.linkedinUrl, "_blank")}
+                            className="flex-shrink-0 w-10 h-10 bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-600 dark:hover:bg-blue-600 rounded-xl flex items-center justify-center transition-all duration-300 group/btn hover:shadow-lg"
+                          >
+                            <Linkedin className="w-5 h-5 text-blue-600 group-hover/btn:text-white dark:text-blue-400 transition-colors" />
+                          </button>
+                          <div className="flex-shrink-0 text-right min-w-[80px]">
+                            <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                              {candidate.voteCount.toLocaleString()}
+                            </div>
+                            <div className="text-xs text-gray-500 dark:text-gray-400 font-medium">
+                              votes
+                            </div>
                           </div>
                         </div>
                         <div className="space-y-2">
