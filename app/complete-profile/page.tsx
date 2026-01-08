@@ -16,12 +16,14 @@ export default function CompleteProfile() {
   const [error, setError] = useState("")
 
   useEffect(() => {
-    if (!session) {
+    if (session === null) {
+      // No session at all, redirect to login
       router.push("/login")
       return
     }
-    // If user already has LinkedIn URL, redirect to vote page
-    if (session.user?.linkedinUrl) {
+    
+    if (session?.user?.linkedinUrl) {
+      // If user already has LinkedIn URL, redirect to vote page
       router.push("/vote")
     }
   }, [session, router])
@@ -68,7 +70,11 @@ export default function CompleteProfile() {
   }
 
   if (!session) {
-    return null
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Loading...</p>
+      </div>
+    )
   }
 
   return (

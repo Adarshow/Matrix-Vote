@@ -128,16 +128,8 @@ export const authOptions: NextAuthOptions = {
                   : existingUser.linkedinUrl,
             },
           })
-          // Check if Google user needs to complete LinkedIn profile
-          if (account.provider === "google" && !existingUser.linkedinUrl) {
-            return "/complete-profile"
-          }
-        } else {
-          // New user signing in with Google needs to complete profile
-          if (account.provider === "google") {
-            return "/complete-profile"
-          }
         }
+        // Always return true to create session - we'll handle redirects in middleware
       }
       return true
     },
