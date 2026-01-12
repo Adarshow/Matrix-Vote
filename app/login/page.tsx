@@ -102,13 +102,13 @@ function LoginForm() {
         <div className="lg:hidden w-full px-6 py-4 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 via-blue-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg">
+              <div className="w-10 h-10 flex items-center justify-center">
                 <Image
                   src="/Matrix_vote_logo.png"
                   alt="Matrix Vote Logo"
                   width={40}
                   height={40}
-                  className="w-6 h-6 object-contain"
+                  className="w-10 h-10 object-contain"
                 />
               </div>
               <div>

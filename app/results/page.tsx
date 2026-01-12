@@ -134,13 +134,13 @@ export default function ResultsPage() {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="relative w-11 h-11 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30 dark:shadow-blue-500/20 hover:shadow-xl transition-all duration-300 hover:scale-105">
+              <div className="relative w-11 h-11 flex items-center justify-center">
                 <Image
                   src="/Matrix_vote_logo.png"
                   alt="Matrix Vote Logo"
                   width={44}
                   height={44}
-                  className="w-6 h-6 object-contain"
+                  className="w-11 h-11 object-contain"
                 />
               </div>
               <div>
