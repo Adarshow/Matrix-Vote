@@ -135,9 +135,13 @@ export default function ResultsPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="relative w-11 h-11 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30 dark:shadow-blue-500/20 hover:shadow-xl transition-all duration-300 hover:scale-105">
-                <svg viewBox="0 0 24 24" fill="white" className="w-6 h-6">
-                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-                </svg>
+                <Image
+                  src="/Matrix_vote_logo.png"
+                  alt="Matrix Vote Logo"
+                  width={44}
+                  height={44}
+                  className="w-6 h-6 object-contain"
+                />
               </div>
               <div>
                 <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
