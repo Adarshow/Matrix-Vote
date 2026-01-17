@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { CountdownTimer } from "@/components/countdown-timer"
 import { LogOut, ExternalLink, CheckCircle2, Linkedin, Vote, Users, Activity, TrendingUp } from "lucide-react"
 
 interface Candidate {
@@ -29,6 +30,8 @@ export default function VotePage() {
   const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null)
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
   const [voting, setVoting] = useState(false)
+  const [votingDeadline, setVotingDeadline] = useState<string | null>(null)
+  const [votingClosed, setVotingClosed] = useState(false)
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -44,16 +47,29 @@ export default function VotePage() {
 
   const fetchData = async () => {
     try {
-      const [candidatesRes, voteStatusRes] = await Promise.all([
+      const [candidatesRes, voteStatusRes, settingsRes] = await Promise.all([
         fetch("/api/candidates", { cache: "no-store" }),
         fetch("/api/vote", { cache: "no-store" }),
+        fetch("/api/admin/voting-settings", { cache: "no-store" }),
       ])
 
       const candidatesData = await candidatesRes.json()
       const voteStatusData = await voteStatusRes.json()
+      const settingsData = await settingsRes.json()
 
       setCandidates(candidatesData)
       setHasVoted(voteStatusData.hasVoted)
+      
+      // Always update deadline state, even if null
+      setVotingDeadline(settingsData.votingDeadline)
+      if (settingsData.votingDeadline) {
+        const deadline = new Date(settingsData.votingDeadline)
+        if (deadline <= new Date()) {
+          setVotingClosed(true)
+        }
+      } else {
+        setVotingClosed(false)
+      }
     } catch (error) {
       console.error("Failed to fetch data:", error)
     } finally {
@@ -62,6 +78,10 @@ export default function VotePage() {
   }
 
   const handleVoteClick = (candidate: Candidate) => {
+    if (votingClosed) {
+      alert("Voting has closed!")
+      return
+    }
     setSelectedCandidate(candidate)
     setShowConfirmDialog(true)
   }
@@ -176,6 +196,24 @@ export default function VotePage() {
             </p>
           </div>
 
+          {/* Countdown Timer */}
+          {votingDeadline && !votingClosed && (
+            <div className="mb-8">
+              <CountdownTimer 
+                deadline={votingDeadline} 
+                onExpire={() => setVotingClosed(true)}
+              />
+            </div>
+          )}
+
+          {votingClosed && (
+            <div className="mb-8 backdrop-blur-xl bg-red-500/10 dark:bg-red-500/20 border border-red-500/30 rounded-2xl p-6 shadow-xl">
+              <p className="text-center text-red-600 dark:text-red-400 font-semibold">
+                Voting has closed. Thank you for your participation!
+              </p>
+            </div>
+          )}
+
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
             <Card className="group relative overflow-hidden bg-gradient-to-br from-blue-600 to-indigo-600 dark:from-blue-700 dark:to-indigo-700 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
@@ -276,10 +314,10 @@ export default function VotePage() {
                 <Button
                   onClick={() => handleVoteClick(candidate)}
                   className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 dark:from-blue-500 dark:to-indigo-500 dark:hover:from-blue-600 dark:hover:to-indigo-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 h-11 font-semibold"
-                  disabled={hasVoted}
+                  disabled={hasVoted || votingClosed}
                 >
                   <Vote className="w-4 h-4 mr-2" />
-                  Vote for {candidate.name.split(' ')[0]}
+                  {votingClosed ? "Voting Closed" : hasVoted ? "Already Voted" : `Vote for ${candidate.name.split(' ')[0]}`}
                 </Button>
               </CardContent>
             </Card>

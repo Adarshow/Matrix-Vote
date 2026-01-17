@@ -4,21 +4,14 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "images.unsplash.com",
+        hostname: "**",
       },
       {
-        protocol: "https",
-        hostname: "lh3.googleusercontent.com",
-      },
-      {
-        protocol: "https",
-        hostname: "media.licdn.com",
-      },
-      {
-        protocol: "https",
-        hostname: "gjqyuzbznluyhidoqfjg.supabase.co",
+        protocol: "http",
+        hostname: "**",
       },
     ],
+    unoptimized: true,
   },
 
   eslint: {

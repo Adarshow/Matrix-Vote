@@ -67,6 +67,8 @@ model Candidate {
   bio         String
   linkedinUrl String
   voteCount   Int      @default(0)
+  isArchived  Boolean  @default(false)
+  archivedAt  DateTime?
   createdAt   DateTime @default(now())
   
   votes       Vote[]
@@ -82,4 +84,21 @@ model Vote {
   candidate   Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
   
   @@index([candidateId])
+}
+
+model Admin {
+  id            String   @id @default(cuid())
+  name          String
+  email         String   @unique
+  password      String
+  role          String   @default("admin")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  lastLoginAt   DateTime?
+}
+
+model VotingSettings {
+  id              String    @id @default(cuid())
+  votingDeadline  DateTime?
+  updatedAt       DateTime  @updatedAt
 }

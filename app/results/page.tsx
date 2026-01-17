@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { CountdownTimer } from "@/components/countdown-timer"
 import { LogOut, Trophy, Users, Vote, BarChart3, Linkedin, TrendingUp, Activity, Clock } from "lucide-react"
 
 interface Candidate {
@@ -39,6 +40,8 @@ export default function ResultsPage() {
   const [candidates, setCandidates] = useState<Candidate[]>([])
   const [voters, setVoters] = useState<Voter[]>([])
   const [loading, setLoading] = useState(true)
+  const [votingDeadline, setVotingDeadline] = useState<string | null>(null)
+  const [votingClosed, setVotingClosed] = useState(false)
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -56,16 +59,29 @@ export default function ResultsPage() {
 
   const fetchData = async () => {
     try {
-      const [candidatesRes, votersRes] = await Promise.all([
+      const [candidatesRes, votersRes, settingsRes] = await Promise.all([
          fetch("/api/candidates", { cache: "no-store" }),
          fetch("/api/voters", { cache: "no-store" }),
+         fetch("/api/admin/voting-settings", { cache: "no-store" }),
       ])
 
       const candidatesData = await candidatesRes.json()
       const votersData = await votersRes.json()
+      const settingsData = await settingsRes.json()
 
       setCandidates(candidatesData)
       setVoters(votersData)
+      
+      // Always update deadline state, even if null
+      setVotingDeadline(settingsData.votingDeadline)
+      if (settingsData.votingDeadline) {
+        const deadline = new Date(settingsData.votingDeadline)
+        if (deadline <= new Date()) {
+          setVotingClosed(true)
+        }
+      } else {
+        setVotingClosed(false)
+      }
     } catch (error) {
       console.error("Failed to fetch data:", error)
     } finally {
@@ -181,6 +197,25 @@ export default function ResultsPage() {
       </div>
 
       <div className="container mx-auto px-6 py-8 space-y-8">
+        {/* Countdown Timer */}
+        {votingDeadline && !votingClosed && (
+          <div className="max-w-4xl mx-auto">
+            <CountdownTimer 
+              deadline={votingDeadline} 
+              onExpire={() => setVotingClosed(true)}
+            />
+          </div>
+        )}
+
+        {votingClosed && (
+          <div className="max-w-4xl mx-auto backdrop-blur-xl bg-green-500/10 dark:bg-green-500/20 border border-green-500/30 rounded-2xl p-6 shadow-xl">
+            <p className="text-center text-green-600 dark:text-green-400 font-semibold flex items-center justify-center gap-2">
+              <Trophy className="w-5 h-5" />
+              Voting has concluded. Final results are displayed below.
+            </p>
+          </div>
+        )}
+
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
             <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-3">

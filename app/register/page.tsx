@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
@@ -8,6 +8,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { CountdownTimer } from "@/components/countdown-timer"
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -16,6 +17,8 @@ export default function RegisterPage() {
   const [success, setSuccess] = useState(false)
   const [otpStep, setOtpStep] = useState(false)
   const [otp, setOtp] = useState("")
+  const [votingDeadline, setVotingDeadline] = useState<string | null>(null)
+  const [votingClosed, setVotingClosed] = useState(false)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -23,6 +26,31 @@ export default function RegisterPage() {
     confirmPassword: "",
     linkedinUrl: "",
   })
+
+  // Fetch voting deadline on mount
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const res = await fetch("/api/admin/voting-settings")
+        if (res.ok) {
+          const data = await res.json()
+          // Always update deadline state, even if null
+          setVotingDeadline(data.votingDeadline)
+          if (data.votingDeadline) {
+            const deadline = new Date(data.votingDeadline)
+            if (deadline <= new Date()) {
+              setVotingClosed(true)
+            }
+          } else {
+            setVotingClosed(false)
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch settings:", error)
+      }
+    }
+    fetchSettings()
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -234,7 +262,23 @@ export default function RegisterPage() {
         </div>
         
         <div className="flex-1 flex items-center justify-center p-6 sm:p-8">
-          <div className="w-full max-w-md">
+          <div className="w-full max-w-md space-y-6">
+            {/* Countdown Timer */}
+            {votingDeadline && !votingClosed && (
+              <CountdownTimer 
+                deadline={votingDeadline} 
+                onExpire={() => setVotingClosed(true)}
+              />
+            )}
+
+            {votingClosed && (
+              <div className="backdrop-blur-xl bg-red-500/10 dark:bg-red-500/20 border border-red-500/30 rounded-xl p-3 shadow-lg">
+                <p className="text-center text-sm text-red-600 dark:text-red-400 font-semibold">
+                  Voting has closed
+                </p>
+              </div>
+            )}
+
             {success ? (
             <div className="text-center space-y-4">
               <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">

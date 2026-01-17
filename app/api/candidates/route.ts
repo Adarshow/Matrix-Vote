@@ -6,6 +6,7 @@ export const dynamic = "force-dynamic"
 export async function GET() {
   try {
     const candidates = await prisma.candidate.findMany({
+      where: { isArchived: false },
       orderBy: { voteCount: "desc" },
     })
 
