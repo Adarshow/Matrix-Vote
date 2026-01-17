@@ -9,16 +9,22 @@
 ### Option 1: Automated Setup (Recommended)
 
 ```powershell
-# Run the setup script
+# Run the setup wizard (includes admin setup)
 .\setup.ps1
 ```
 
-This will:
+This interactive wizard will:
 - ✓ Copy .env.example to .env
 - ✓ Install dependencies
 - ✓ Generate Prisma client
 - ✓ Push database schema
-- ✓ Seed candidates
+- ✓ Optionally seed sample candidates
+- ✓ Optionally create admin user
+
+**Admin Credentials (if created):**
+- Email: `admin@whitematrix.com`
+- Password: `admin123` (change immediately!)
+- URL: http://localhost:3000/admin/login
 
 ### Option 2: Manual Setup
 

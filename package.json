@@ -10,7 +10,11 @@
     "postinstall": "prisma generate",
     "db:push": "prisma db push",
     "db:seed": "node prisma/seed.ts",
-    "admin:seed": "node prisma/seed-admin.js"
+    "admin:seed": "node prisma/seed-admin.js",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "docker:build": "docker-compose up -d --build"
   },
   "prisma": {
     "seed": "node prisma/seed.ts"

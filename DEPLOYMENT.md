@@ -77,11 +77,72 @@
    ```bash
    npx prisma db push
    ```
+   
+   Or run migrations:
+   ```bash
+   npx prisma migrate deploy
+   ```
 
-4. **Seed Candidates**
+4. **Seed Candidates (Optional)**
    ```bash
    npm run db:seed
    ```
+
+5. **Create Admin User**
+   
+   **Option A: Using seed script**
+   ```bash
+   npm run admin:seed
+   ```
+   
+   **Option B: Using Supabase SQL Editor**
+   
+   Go to Supabase Dashboard → SQL Editor → New Query:
+   
+   ```sql
+   -- Create Admin table (if migrations didn't run)
+   CREATE TABLE IF NOT EXISTS "Admin" (
+       "id" TEXT NOT NULL,
+       "name" TEXT NOT NULL,
+       "email" TEXT NOT NULL,
+       "password" TEXT NOT NULL,
+       "role" TEXT NOT NULL DEFAULT 'admin',
+       "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+       "updatedAt" TIMESTAMP(3) NOT NULL,
+       "lastLoginAt" TIMESTAMP(3),
+       CONSTRAINT "Admin_pkey" PRIMARY KEY ("id")
+   );
+   
+   CREATE UNIQUE INDEX IF NOT EXISTS "Admin_email_key" ON "Admin"("email");
+   
+   -- Create VotingSettings table (if migrations didn't run)
+   CREATE TABLE IF NOT EXISTS "VotingSettings" (
+       "id" TEXT NOT NULL,
+       "votingDeadline" TIMESTAMP(3),
+       "updatedAt" TIMESTAMP(3) NOT NULL,
+       CONSTRAINT "VotingSettings_pkey" PRIMARY KEY ("id")
+   );
+   
+   -- Insert default admin (password is 'admin123')
+   INSERT INTO "Admin" (id, name, email, password, role, "createdAt", "updatedAt")
+   VALUES (
+     gen_random_uuid()::text,
+     'Admin',
+     'admin@whitematrix.com',
+     '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGa676.oa2G0B4PBgy',
+     'admin',
+     NOW(),
+     NOW()
+   )
+   ON CONFLICT (email) DO NOTHING;
+   ```
+   
+   **Default Admin Credentials:**
+   - URL: `https://your-project.vercel.app/admin/login`
+   - Email: `admin@whitematrix.com`
+   - Password: `admin123`
+   
+   ⚠️ **CRITICAL**: Change the password immediately after first login!
 
 ### Step 4: Configure OAuth (Optional)
 
