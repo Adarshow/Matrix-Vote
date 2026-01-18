@@ -1,310 +1,66 @@
 ﻿"use client"
 
-import { useState, useEffect, Suspense } from "react"
-import { signIn } from "next-auth/react"
-import { useRouter, useSearchParams } from "next/navigation"
-import Link from "next/link"
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { ThemeToggle } from "@/components/theme-toggle"
-import { CountdownTimer } from "@/components/countdown-timer"
-
-function LoginForm() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  })
-  const [votingDeadline, setVotingDeadline] = useState<string | null>(null)
-  const [votingClosed, setVotingClosed] = useState(false)
-
-  useEffect(() => {
-    const errorParam = searchParams.get("error")
-    if (errorParam === "linkedin_already_linked") {
-      setError("This LinkedIn profile is already linked to another account. Please use a different account or sign in with credentials.")
-    }
-
-    // Fetch voting deadline
-    const fetchSettings = async () => {
-      try {
-        const res = await fetch("/api/admin/voting-settings")
-        if (res.ok) {
-          const data = await res.json()
-          // Always update deadline state, even if null
-          setVotingDeadline(data.votingDeadline)
-          if (data.votingDeadline) {
-            const deadline = new Date(data.votingDeadline)
-            if (deadline <= new Date()) {
-              setVotingClosed(true)
-            }
-          } else {
-            setVotingClosed(false)
-          }
-        }
-      } catch (error) {
-        console.error("Failed to fetch settings:", error)
-      }
-    }
-    fetchSettings()
-  }, [searchParams])
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError("")
-
-    try {
-      const result = await signIn("credentials", {
-        email: formData.email,
-        password: formData.password,
-        redirect: false,
-      })
-
-      if (result?.error) {
-        setError("Invalid email or password")
-      } else {
-        router.push("/vote")
-        router.refresh()
-      }
-    } catch (error) {
-      setError("Something went wrong")
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const handleOAuthSignIn = async (provider: "google" | "linkedin") => {
-    setLoading(true)
-    try {
-      await signIn(provider, { callbackUrl: "/vote" })
-    } catch (error) {
-      setError("OAuth sign in failed")
-      setLoading(false)
-    }
-  }
-
-  return (
-    <div className="min-h-screen flex">
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-indigo-600 via-blue-600 to-indigo-700 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-20 w-64 h-64 border border-white rounded-lg transform rotate-12"></div>
-          <div className="absolute top-40 left-32 w-48 h-48 border border-white rounded-lg transform -rotate-6"></div>
-          <div className="absolute top-60 left-16 w-56 h-56 border border-white rounded-lg transform rotate-3"></div>
-        </div>
-
-        <div className="relative z-10 flex flex-col justify-center px-16 text-white">
-          <div className="mb-8">
-            <div className="w-16 h-16 mb-6 flex items-center justify-center">
-              <Image
-                src="/logo.png"
-                alt="Matrix Vote Logo"
-                width={64}
-                height={64}
-                className="w-full h-full object-contain"
-              />
-            </div>
-          </div>
-          
-          <h1 className="text-5xl font-bold mb-4 leading-tight">
-            Welcome to<br />Matrix Vote! 
-          </h1>
-          
-          <p className="text-lg text-blue-100 leading-relaxed max-w-md">
-            Cast your vote and make your voice heard. Join the democratic process through secure and transparent voting.
-          </p>
-          
-          <div className="absolute bottom-8 left-16 text-sm text-blue-200">
-             © {new Date().getFullYear()} Matrix Vote. All rights reserved.
-          </div>
-        </div>
-      </div>
-
-      <div className="w-full lg:w-1/2 flex flex-col bg-white dark:bg-gray-900">
-        {/* Mobile Header */}
-        <div className="lg:hidden w-full px-6 py-4 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 flex items-center justify-center">
-                <Image
-                  src="/logo.png"
-                  alt="Matrix Vote Logo"
-                  width={40}
-                  height={40}
-                  className="w-10 h-10 object-contain"
-                />
-              </div>
-              <div>
-                <h1 className="text-lg font-bold text-foreground">
-                  Matrix Vote
-                </h1>
-                <p className="text-xs text-gray-500 dark:text-gray-400">Voting Platform</p>
-              </div>
-            </div>
-            <ThemeToggle />
-          </div>
-        </div>
-
-        {/* Desktop Theme Toggle */}
-        <div className="hidden lg:block absolute top-4 right-4 z-50">
-          <ThemeToggle />
-        </div>
-        
-        <div className="flex-1 flex items-center justify-center p-6 sm:p-8">
-          <div className="w-full max-w-md space-y-6">
-            {/* Countdown Timer */}
-            {votingDeadline && !votingClosed && (
-              <CountdownTimer 
-                deadline={votingDeadline} 
-                onExpire={() => setVotingClosed(true)}
-              />
-            )}
-
-            {votingClosed && (
-              <div className="backdrop-blur-xl bg-red-500/10 dark:bg-red-500/20 border border-red-500/30 rounded-xl p-3 shadow-lg">
-                <p className="text-center text-sm text-red-600 dark:text-red-400 font-semibold">
-                  Voting has closed
-                </p>
-              </div>
-            )}
-
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                Welcome Back!
-              </h2>
-              <p className="text-gray-600 dark:text-gray-400">
-                Don't have an account?{" "}
-              <Link 
-                href="/register" 
-                className="text-indigo-600 dark:text-indigo-400 hover:underline font-semibold"
-              >
-                Create a new account now
-              </Link>
-              , it's FREE! Takes less than a minute.
-            </p>
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <Input
-                id="email"
-                type="email"
-                placeholder="Email address"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                required
-                disabled={loading}
-                className="w-full h-12 px-4 border-0 border-b-2 border-gray-300 dark:border-gray-600 rounded-none focus:border-indigo-600 dark:focus:border-indigo-400 focus:ring-0 bg-transparent"
-              />
-            </div>
-
-            <div>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Password"
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                required
-                disabled={loading}
-                className="w-full h-12 px-4 border-0 border-b-2 border-gray-300 dark:border-gray-600 rounded-none focus:border-indigo-600 dark:focus:border-indigo-400 focus:ring-0 bg-transparent"
-              />
-            </div>
-
-            {error && (
-              <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
-            )}
-
-            <Button 
-              type="submit" 
-              className="w-full h-12 bg-black hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-200 text-white dark:text-black font-semibold rounded-lg transition-colors"
-              disabled={loading}
-            >
-              {loading ? "Signing in..." : "Login Now"}
-            </Button>
-          </form>
-
-          <div className="mt-6 space-y-3">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white dark:bg-gray-900 text-gray-500">Or continue with</span>
-              </div>
-            </div>
-
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => handleOAuthSignIn("google")}
-              disabled={loading}
-              className="w-full h-12 border-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg font-semibold"
-            >
-              <svg className="mr-3 h-5 w-5" viewBox="0 0 24 24">
-                <path
-                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                  fill="#4285F4"
-                />
-                <path
-                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                  fill="#34A853"
-                />
-                <path
-                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-                  fill="#FBBC05"
-                />
-                <path
-                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                  fill="#EA4335"
-                />
-              </svg>
-              Login with Google
-            </Button>
-
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => handleOAuthSignIn("linkedin")}
-              disabled={loading}
-              className="w-full h-12 border-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg font-semibold"
-            >
-              <svg className="mr-3 h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-              </svg>
-              Login with LinkedIn
-            </Button>
-          </div>
-
-          <div className="mt-6 text-center">
-            <Link 
-              href="/forgot-password" 
-              className="text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 text-sm"
-            >
-              Forget password? <span className="font-semibold underline">Click here</span>
-            </Link>
-          </div>
-        </div>
-        </div>
-      </div>
-    </div>
-  )
-}
+import { SignInPage } from "@/components/ui/sign-in-flow-1";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const [error, setError] = useState("");
+
+  const handleEmailPasswordSubmit = async (email: string, password: string) => {
+    try {
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        throw new Error(result.error);
+      }
+
+      // Check if user needs to complete profile
+      const response = await fetch("/api/auth/session");
+      const session = await response.json();
+      
+      if (session?.user?.linkedinUrl) {
+        router.push("/vote");
+      } else {
+        router.push("/complete-profile");
+      }
+    } catch (err: any) {
+      setError(err.message);
+      throw err;
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await signIn("google", { callbackUrl: "/vote" });
+    } catch (err: any) {
+      setError(err.message);
+      throw err;
+    }
+  };
+
+  const handleLinkedInSignIn = async () => {
+    try {
+      await signIn("linkedin", { callbackUrl: "/vote" });
+    } catch (err: any) {
+      setError(err.message);
+      throw err;
+    }
+  };
+
   return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-400">Loading...</p>
-        </div>
-      </div>
-    }>
-      <LoginForm />
-    </Suspense>
-  )
+    <SignInPage
+      onEmailPasswordSubmit={handleEmailPasswordSubmit}
+      onGoogleSignIn={handleGoogleSignIn}
+      onLinkedInSignIn={handleLinkedInSignIn}
+      logoSrc="/logo.png"
+      companyName="Matrix Vote"
+    />
+  );
 }
