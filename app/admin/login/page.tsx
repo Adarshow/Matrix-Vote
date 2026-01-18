@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -49,8 +50,14 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-md space-y-8">
         {/* Header */}
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20">
-            <Shield className="w-8 h-8 text-primary" />
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg">
+            <Image
+              src="/logo.png"
+              alt="Matrix Vote Logo"
+              width={40}
+              height={40}
+              className="w-10 h-10 object-contain"
+            />
           </div>
           <div className="space-y-1">
             <h1 className="text-3xl font-bold tracking-tight">Admin Portal</h1>

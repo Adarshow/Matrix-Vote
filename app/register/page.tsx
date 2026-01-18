@@ -207,7 +207,7 @@ export default function RegisterPage() {
           <div className="mb-8">
             <div className="w-16 h-16 mb-6 flex items-center justify-center">
               <Image
-                src="/Matrix_vote_logo.png"
+                src="/logo.png"
                 alt="Matrix Vote Logo"
                 width={64}
                 height={64}
@@ -238,7 +238,7 @@ export default function RegisterPage() {
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 flex items-center justify-center">
                 <Image
-                  src="/Matrix_vote_logo.png"
+                  src="/logo.png"
                   alt="Matrix Vote Logo"
                   width={40}
                   height={40}
@@ -246,7 +246,7 @@ export default function RegisterPage() {
                 />
               </div>
               <div>
-                <h1 className="text-lg font-bold bg-gradient-to-r from-indigo-600 to-blue-600 dark:from-indigo-400 dark:to-blue-400 bg-clip-text text-transparent">
+                <h1 className="text-lg font-bold text-foreground">
                   Matrix Vote
                 </h1>
                 <p className="text-xs text-gray-500 dark:text-gray-400">Voting Platform</p>

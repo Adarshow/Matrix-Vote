@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "Matrix Vote",
   description: "Secure online voting platform for Matrix Vote",
   icons: {
-    icon: "/Matrix_vote_logo.png",
+    icon: "/logo.png",
   },
 }
 

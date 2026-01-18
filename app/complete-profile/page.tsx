@@ -177,7 +177,7 @@ export default function CompleteProfile() {
                 </svg>
               </div>
               <div>
-                <h1 className="text-lg font-bold bg-gradient-to-r from-indigo-600 to-blue-600 dark:from-indigo-400 dark:to-blue-400 bg-clip-text text-transparent">
+                <h1 className="text-lg font-bold text-foreground">
                   Matrix Vote
                 </h1>
                 <p className="text-xs text-gray-500 dark:text-gray-400">Voting Platform</p>

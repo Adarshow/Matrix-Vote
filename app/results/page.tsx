@@ -152,7 +152,7 @@ export default function ResultsPage() {
             <div className="flex items-center gap-4">
               <div className="relative w-11 h-11 flex items-center justify-center">
                 <Image
-                  src="/Matrix_vote_logo.png"
+                  src="/logo.png"
                   alt="Matrix Vote Logo"
                   width={44}
                   height={44}
@@ -160,7 +160,7 @@ export default function ResultsPage() {
                 />
               </div>
               <div>
-                <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
+                <h1 className="text-xl font-bold text-foreground">
                   Matrix Vote
                 </h1>
                 <p className="text-xs text-gray-500 dark:text-gray-400">Voting Platform</p>
