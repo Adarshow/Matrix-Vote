@@ -17,6 +17,8 @@ interface NavBarProps {
   logoSrc?: string
   companyName?: string
   showAuthButtons?: boolean
+  rightItems?: React.ReactNode
+  activeItem?: string
   className?: string
 }
 
@@ -25,9 +27,11 @@ export function NavBar({
   logoSrc = "/logo.png",
   companyName = "Company",
   showAuthButtons = true,
+  rightItems,
+  activeItem,
   className 
 }: NavBarProps) {
-  const [activeTab, setActiveTab] = useState(leftItems[0]?.name || "")
+  const [activeTab, setActiveTab] = useState(activeItem || leftItems[0]?.name || "")
 
   return (
     <div
@@ -92,7 +96,11 @@ export function NavBar({
         </div>
 
         {/* Right Side - Auth Buttons */}
-        {showAuthButtons && (
+        {rightItems ? (
+          <div className="flex items-center gap-2">
+            {rightItems}
+          </div>
+        ) : showAuthButtons ? (
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <Link href="/login">
@@ -109,7 +117,7 @@ export function NavBar({
               </div>
             </Link>
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   )

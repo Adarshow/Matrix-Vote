@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { InfiniteGridBackground } from "./infinite-grid-background";
 import ShinyText from "./ShinyText";
 import { Mail, Lock, AlertCircle } from "lucide-react";
+import { ShinyButton } from "./shiny-button";
 
 interface AdminLoginPageProps {
   className?: string;
@@ -94,21 +95,21 @@ export const AdminLoginPage = ({
                 <h1 className="text-5xl lg:text-7xl font-extrabold leading-tight">
                   <ShinyText
                     text="Admin"
-                    speed={3}
+                    speed={2}
                     delay={0}
                     spread={100}
                     className="block mb-2"
                     color="hsl(var(--foreground))"
-                    shineColor="hsl(var(--primary))"
+                    shineColor="#b5b5b5"
                   />
                   <ShinyText
                     text="Portal"
-                    speed={3}
+                    speed={2}
                     delay={1}
                     spread={100}
                     className="block"
                     color="hsl(var(--foreground))"
-                    shineColor="hsl(var(--primary))"
+                    shineColor="#b5b5b5"
                   />
                 </h1>
                 <p className="text-xl lg:text-2xl text-muted-foreground font-light">
@@ -194,20 +195,20 @@ export const AdminLoginPage = ({
                     />
                   </div>
 
-                  <button 
+                  <ShinyButton 
                     type="submit"
                     disabled={loading}
-                    className="w-full rounded-full bg-primary text-primary-foreground font-medium py-3 hover:bg-primary/90 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                    className="w-full"
                   >
                     {loading ? (
                       <>
-                        <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                         Signing in...
                       </>
                     ) : (
                       "Sign In"
                     )}
-                  </button>
+                  </ShinyButton>
                 </form>
 
                 <div className="pt-4 border-t border-border">

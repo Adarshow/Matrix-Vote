@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { NavBar } from "./tubelight-navbar";
 import { InfiniteGridBackground } from "./infinite-grid-background";
 import ShinyText from "./ShinyText";
+import { ShinyButton } from "./shiny-button";
 
 interface SignUpPageProps {
   className?: string;
@@ -209,7 +210,7 @@ export const SignUpPage = ({
         <NavBar 
           leftItems={[
             { name: 'About', url: '/' },
-            { name: 'Vote', url: '/vote' },
+            { name: 'Contact', url: '/contact' },
             { name: 'Results', url: '/results' },
           ]}
           logoSrc={logoSrc}
@@ -243,21 +244,21 @@ export const SignUpPage = ({
                 <h1 className="text-5xl lg:text-7xl font-extrabold leading-tight">
                   <ShinyText
                     text="Join -"
-                    speed={3}
+                    speed={2}
                     delay={0}
                     spread={100}
                     className="block mb-2"
                     color="hsl(var(--foreground))"
-                    shineColor="hsl(var(--primary))"
+                    shineColor="#b5b5b5"
                   />
                   <ShinyText
                     text={companyName}
-                    speed={3}
+                    speed={2}
                     delay={1}
                     spread={100}
                     className="block"
                     color="hsl(var(--foreground))"
-                    shineColor="hsl(var(--primary))"
+                    shineColor="#b5b5b5"
                   />
                 </h1>
                 <p className="text-xl lg:text-2xl text-muted-foreground font-light">
@@ -316,13 +317,13 @@ export const SignUpPage = ({
                       <p className="text-sm text-red-500 text-center">{error}</p>
                     )}
 
-                    <button 
+                    <ShinyButton 
                       type="submit"
                       disabled={loading || otp.length !== 6}
-                      className="w-full rounded-full bg-primary text-primary-foreground font-medium py-3 hover:bg-primary/90 transition-colors disabled:opacity-50"
+                      className="w-full"
                     >
                       {loading ? "Verifying..." : "Verify & Create Account"}
-                    </button>
+                    </ShinyButton>
 
                     <div className="flex items-center justify-between pt-2">
                       <button
@@ -434,13 +435,13 @@ export const SignUpPage = ({
                         <p className="text-sm text-red-500 text-center">{error}</p>
                       )}
 
-                      <button 
+                      <ShinyButton 
                         type="submit"
                         disabled={loading}
-                        className="w-full rounded-full bg-primary text-primary-foreground font-medium py-3 hover:bg-primary/90 transition-colors disabled:opacity-50"
+                        className="w-full"
                       >
                         {loading ? "Sending OTP..." : "Continue"}
-                      </button>
+                      </ShinyButton>
                     </form>
                   </div>
                 )}
