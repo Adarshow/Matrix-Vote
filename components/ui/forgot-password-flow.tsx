@@ -87,7 +87,7 @@ export const ForgotPasswordPage = ({
         <NavBar 
           leftItems={[
             { name: 'About', url: '/' },
-            { name: 'Contact', url: '/contact' },
+            { name: 'Candidates', url: '/candidates' },
             { name: 'Results', url: '/results' },
           ]}
           logoSrc={logoSrc}

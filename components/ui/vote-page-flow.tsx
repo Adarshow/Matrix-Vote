@@ -178,7 +178,7 @@ export const VotePageContent = ({
         <NavBar 
           leftItems={[
             { name: 'About', url: '/' },
-            { name: 'Contact', url: '/contact' },
+            { name: 'Candidates', url: '/candidates' },
             { name: 'Vote', url: '/vote' },
             { name: 'Results', url: '/results' },
           ]}

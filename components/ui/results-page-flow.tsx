@@ -146,8 +146,7 @@ export const ResultsPageContent = ({
           <NavBar 
             leftItems={[
               { name: 'About', url: '/' },
-              { name: 'Contact', url: '/contact' },
-              { name: 'Vote', url: '/vote' },
+              { name: 'Candidates', url: '/candidates' },
               { name: 'Results', url: '/results' },
             ]}
             activeItem="Results"
@@ -187,8 +186,7 @@ export const ResultsPageContent = ({
         <NavBar 
           leftItems={[
             { name: 'About', url: '/' },
-            { name: 'Contact', url: '/contact' },
-            { name: 'Vote', url: '/vote' },
+            { name: 'Candidates', url: '/candidates' },
             { name: 'Results', url: '/results' },
           ]}
           activeItem="Results"
