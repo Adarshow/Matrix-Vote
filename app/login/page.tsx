@@ -61,6 +61,7 @@ export default function LoginPage() {
       onLinkedInSignIn={handleLinkedInSignIn}
       logoSrc="/logo.png"
       companyName="Matrix Vote"
+      error={error}
     />
   );
 }

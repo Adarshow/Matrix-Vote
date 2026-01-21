@@ -54,15 +54,20 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          throw new Error("Invalid credentials")
+          throw new Error("Please enter your email and password")
         }
 
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
         })
 
-        if (!user || !user.password) {
-          throw new Error("Invalid credentials")
+        if (!user) {
+          throw new Error("No account found with this email address")
+        }
+
+        if (!user.password) {
+          // User signed up with OAuth (Google/LinkedIn)
+          throw new Error("This account was created using Google or LinkedIn. Please sign in using the same method.")
         }
 
         const isCorrectPassword = await bcrypt.compare(
@@ -71,7 +76,7 @@ export const authOptions: NextAuthOptions = {
         )
 
         if (!isCorrectPassword) {
-          throw new Error("Invalid credentials")
+          throw new Error("Incorrect password. Please try again or reset your password.")
         }
 
         return {

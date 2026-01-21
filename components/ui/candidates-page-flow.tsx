@@ -12,7 +12,8 @@ import { InfiniteGridBackground } from "@/components/ui/infinite-grid-background
 import ShinyText from "@/components/ui/ShinyText"
 import { Skeleton } from "@/components/ui/skeleton"
 import { GlowingEffect } from "@/components/ui/glowing-effect"
-import { Users, Linkedin, ExternalLink, Vote } from "lucide-react"
+import { CompactCountdown } from "@/components/compact-countdown"
+import { Users, Linkedin, ExternalLink, Vote, TrendingUp, Activity } from "lucide-react"
 
 interface Candidate {
   id: string
@@ -37,10 +38,26 @@ export const CandidatesPageContent = ({
   const { data: session, status } = useSession()
   const [candidates, setCandidates] = useState<Candidate[]>([])
   const [loading, setLoading] = useState(true)
+  const [votingDeadline, setVotingDeadline] = useState<string | null>(null)
 
   useEffect(() => {
     fetchCandidates()
+    fetchVotingDeadline()
   }, [])
+
+  const fetchVotingDeadline = async () => {
+    try {
+      const response = await fetch('/api/admin/voting-settings')
+      if (response.ok) {
+        const data = await response.json()
+        if (data.votingDeadline) {
+          setVotingDeadline(data.votingDeadline)
+        }
+      }
+    } catch (error) {
+      console.error('Failed to fetch voting deadline:', error)
+    }
+  }
 
   const fetchCandidates = async () => {
     try {
@@ -71,6 +88,7 @@ export const CandidatesPageContent = ({
             showAuthButtons={!session}
             rightItems={
               <>
+                {votingDeadline && <CompactCountdown deadline={votingDeadline} />}
                 <ThemeToggle />
                 {session && (
                   <ProfileDropdown
@@ -108,6 +126,7 @@ export const CandidatesPageContent = ({
           showAuthButtons={!session}
           rightItems={
             <>
+              {votingDeadline && <CompactCountdown deadline={votingDeadline} />}
               <ThemeToggle />
               {session && (
                 <ProfileDropdown
@@ -126,9 +145,9 @@ export const CandidatesPageContent = ({
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-center mb-12 pt-10"
+              className="text-center mb-8 lg:mb-12 pt-10"
             >
-              <h1 className="text-5xl lg:text-7xl font-extrabold mb-4">
+              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold mb-4">
                 <ShinyText
                   text="Meet Our"
                   speed={3}
@@ -148,40 +167,46 @@ export const CandidatesPageContent = ({
                   shineColor="#ffffff"
                 />
               </h1>
-              <p className="text-xl text-muted-foreground mt-6">
-                Get to know the candidates running in this election
+              <p className="text-base sm:text-xl text-muted-foreground mt-4 sm:mt-6 px-4">
+                Get to know the candidates running in this election. Review their profiles, backgrounds, and professional achievements before casting your vote.
               </p>
             </motion.div>
 
-            {/* Candidates Count Banner */}
+            {/* Stats Banner */}
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="mb-12 max-w-3xl mx-auto"
+              className="mb-8 lg:mb-12 max-w-5xl mx-auto"
             >
-              <div className="relative rounded-2xl border p-2 md:rounded-3xl md:p-3">
-                <GlowingEffect
-                  blur={0}
-                  borderWidth={3}
-                  spread={80}
-                  glow={true}
-                  disabled={false}
-                  proximity={64}
-                  inactiveZone={0.01}
-                />
-                <div className="border-0.75 relative flex flex-col md:flex-row items-center justify-center gap-6 overflow-hidden rounded-xl p-8 md:p-10 dark:shadow-[0px_0px_27px_0px_#2D2D2D]">
-                  <div className="flex items-center justify-center w-20 h-20 bg-gradient-to-br from-primary/30 to-primary/10 rounded-2xl shadow-lg">
-                    <Users className="w-10 h-10 text-primary" />
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                <div className="backdrop-blur-sm bg-card/30 border border-border rounded-xl sm:rounded-2xl p-4 sm:p-6 text-center shadow-lg">
+                  <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500/20 to-blue-600/10 rounded-xl mx-auto mb-2">
+                    <Users className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 dark:text-blue-400" />
                   </div>
-                  <div className="text-center md:text-left">
-                    <p className="text-5xl md:text-6xl font-bold text-foreground mb-2">
-                      {candidates.length}
-                    </p>
-                    <p className="text-lg text-muted-foreground font-medium">
-                      Talented Candidates Competing
-                    </p>
+                  <p className="text-2xl sm:text-3xl font-bold text-foreground">{candidates.length}</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground font-medium">Candidates</p>
+                </div>
+                <div className="backdrop-blur-sm bg-card/30 border border-border rounded-xl sm:rounded-2xl p-4 sm:p-6 text-center shadow-lg">
+                  <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-green-500/20 to-green-600/10 rounded-xl mx-auto mb-2">
+                    <Vote className="w-5 h-5 sm:w-6 sm:h-6 text-green-600 dark:text-green-400" />
                   </div>
+                  <p className="text-2xl sm:text-3xl font-bold text-foreground">{candidates.reduce((sum, c) => sum + c.voteCount, 0)}</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground font-medium">Total Votes</p>
+                </div>
+                <div className="backdrop-blur-sm bg-card/30 border border-border rounded-xl sm:rounded-2xl p-4 sm:p-6 text-center shadow-lg">
+                  <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-purple-500/20 to-purple-600/10 rounded-xl mx-auto mb-2">
+                    <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600 dark:text-purple-400" />
+                  </div>
+                  <p className="text-2xl sm:text-3xl font-bold text-foreground">{Math.max(...candidates.map(c => c.voteCount), 0)}</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground font-medium">Leading Votes</p>
+                </div>
+                <div className="backdrop-blur-sm bg-card/30 border border-border rounded-xl sm:rounded-2xl p-4 sm:p-6 text-center shadow-lg">
+                  <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-amber-500/20 to-amber-600/10 rounded-xl mx-auto mb-2">
+                    <Activity className="w-5 h-5 sm:w-6 sm:h-6 text-amber-600 dark:text-amber-400" />
+                  </div>
+                  <p className="text-2xl sm:text-3xl font-bold text-foreground">Live</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground font-medium">Status</p>
                 </div>
               </div>
             </motion.div>
@@ -191,7 +216,7 @@ export const CandidatesPageContent = ({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="grid md:grid-cols-2 gap-8 max-w-7xl mx-auto"
+              className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-7xl mx-auto"
             >
               {candidates.length === 0 ? (
                 <div className="col-span-full text-center py-12">
@@ -205,22 +230,22 @@ export const CandidatesPageContent = ({
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
-                    className="min-h-[20rem] list-none"
+                    className="min-h-fit list-none"
                   >
-                    <div className="relative h-full rounded-2xl border p-2 md:rounded-3xl md:p-3">
+                    <div className="relative h-full rounded-xl border p-2 sm:rounded-2xl sm:p-2.5">
                       <GlowingEffect
                         blur={0}
-                        borderWidth={3}
-                        spread={80}
+                        borderWidth={2.5}
+                        spread={70}
                         glow={true}
                         disabled={false}
-                        proximity={64}
+                        proximity={56}
                         inactiveZone={0.01}
                       />
-                      <div className="border-0.75 relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-xl p-6 md:p-6 dark:shadow-[0px_0px_27px_0px_#2D2D2D]">
-                        <div className="flex flex-col items-center text-center space-y-4">
+                      <div className="border-0.75 relative flex h-full flex-col gap-4 overflow-hidden rounded-lg sm:rounded-xl p-4 sm:p-5 dark:shadow-[0px_0px_27px_0px_#2D2D2D]">
+                        <div className="flex flex-col items-center text-center space-y-3">
                           {/* Candidate Image */}
-                          <div className="relative w-28 h-28 rounded-full overflow-hidden ring-4 ring-primary/20 shadow-xl">
+                          <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden ring-4 ring-primary/20 shadow-lg">
                             <Image
                               src={candidate.image}
                               alt={candidate.name}
@@ -230,19 +255,23 @@ export const CandidatesPageContent = ({
                           </div>
                           
                           {/* Candidate Info */}
-                          <div>
-                            <h3 className="text-xl font-bold text-foreground mb-2">
+                          <div className="w-full">
+                            <h3 className="text-lg sm:text-xl font-bold text-foreground mb-2">
                               {candidate.name}
                             </h3>
                             
-                            <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full mb-3">
-                              <Vote className="w-3 h-3 text-primary" />
-                              <span className="text-xs font-bold text-primary">
-                                Candidate
-                              </span>
+                            <div className="flex items-center justify-center gap-2 flex-wrap mb-3">
+                              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-primary/10 rounded-full">
+                                <Vote className="w-3 h-3 text-primary" />
+                                <span className="text-xs font-bold text-primary">Candidate</span>
+                              </div>
+                              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-green-500/10 rounded-full">
+                                <TrendingUp className="w-3 h-3 text-green-600 dark:text-green-400" />
+                                <span className="text-xs font-bold text-green-600 dark:text-green-400">{candidate.voteCount} votes</span>
+                              </div>
                             </div>
 
-                            <p className="text-sm text-muted-foreground leading-relaxed min-h-[60px]">
+                            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed line-clamp-3 mb-3">
                               {candidate.bio}
                             </p>
                           </div>
@@ -252,10 +281,10 @@ export const CandidatesPageContent = ({
                             href={candidate.linkedinUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors"
+                            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-primary/10 hover:bg-primary/20 border border-primary/30 rounded-full text-xs sm:text-sm font-medium text-primary transition-colors"
                           >
                             <Linkedin className="w-4 h-4" />
-                            <span className="font-medium">View LinkedIn Profile</span>
+                            <span>View Profile</span>
                             <ExternalLink className="w-3 h-3" />
                           </a>
                         </div>

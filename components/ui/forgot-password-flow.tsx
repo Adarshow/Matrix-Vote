@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -9,6 +9,8 @@ import { NavBar } from "./tubelight-navbar";
 import { InfiniteGridBackground } from "./infinite-grid-background";
 import ShinyText from "./ShinyText";
 import { ShinyButton } from "./shiny-button";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { CompactCountdown } from "@/components/compact-countdown";
 
 interface ForgotPasswordPageProps {
   className?: string;
@@ -24,6 +26,24 @@ export const ForgotPasswordPage = ({
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [votingDeadline, setVotingDeadline] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchVotingDeadline = async () => {
+      try {
+        const response = await fetch('/api/admin/voting-settings');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.votingDeadline) {
+            setVotingDeadline(data.votingDeadline);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch voting deadline:', error);
+      }
+    };
+    fetchVotingDeadline();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,6 +113,12 @@ export const ForgotPasswordPage = ({
           logoSrc={logoSrc}
           companyName={companyName}
           showAuthButtons={true}
+          rightItems={
+            <>
+              {votingDeadline && <CompactCountdown deadline={votingDeadline} />}
+              <ThemeToggle />
+            </>
+          }
         />
 
         <div className="flex flex-1 flex-col lg:flex-row items-center justify-center px-4 lg:px-0 pt-20 lg:pt-0">

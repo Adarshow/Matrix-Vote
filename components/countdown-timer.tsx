@@ -1,7 +1,9 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { motion } from "framer-motion"
 import { Clock } from "lucide-react"
+import { GlowingEffect } from "@/components/ui/glowing-effect"
 
 interface CountdownTimerProps {
   deadline: string
@@ -46,59 +48,103 @@ export function CountdownTimer({ deadline, onExpire }: CountdownTimerProps) {
 
   if (expired) {
     return (
-      <div className="backdrop-blur-xl bg-red-500/10 dark:bg-red-500/20 border border-red-500/30 rounded-xl p-3 shadow-lg animate-pulse">
-        <div className="flex items-center justify-center gap-2 text-red-600 dark:text-red-400">
-          <Clock className="w-4 h-4" />
-          <span className="text-sm font-semibold">Voting has closed</span>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="relative rounded-2xl border p-2 md:rounded-3xl md:p-3"
+      >
+        <GlowingEffect
+          blur={0}
+          borderWidth={3}
+          spread={80}
+          glow={true}
+          disabled={false}
+          proximity={64}
+          inactiveZone={0.01}
+          variant="white"
+        />
+        <div className="border-0.75 relative overflow-hidden rounded-xl p-6 md:p-8 dark:shadow-[0px_0px_27px_0px_#2D2D2D] bg-gradient-to-r from-red-500/10 to-rose-500/10">
+          <div className="flex flex-col items-center gap-3 text-center">
+            <div className="p-3 bg-red-500/20 rounded-xl">
+              <Clock className="w-6 h-6 text-red-500 animate-pulse" />
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-red-600 dark:text-red-400 mb-1">
+                Voting Has Closed
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Thank you for your participation!
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
+      </motion.div>
     )
   }
 
   if (!timeLeft) return null
 
   return (
-    <div className="backdrop-blur-xl bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10 dark:from-blue-500/20 dark:via-indigo-500/20 dark:to-purple-500/20 border border-blue-500/20 dark:border-blue-500/30 rounded-xl p-4 shadow-lg">
-      <div className="flex items-center justify-center gap-2 mb-3">
-        <Clock className="w-4 h-4 text-indigo-600 dark:text-indigo-400 animate-pulse" />
-        <h3 className="text-sm font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
-          Voting Closes In
-        </h3>
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className="relative rounded-2xl border p-2 md:rounded-3xl md:p-3"
+    >
+      <GlowingEffect
+        blur={0}
+        borderWidth={3}
+        spread={80}
+        glow={true}
+        disabled={false}
+        proximity={64}
+        inactiveZone={0.01}
+      />
+      <div className="border-0.75 relative overflow-hidden rounded-xl p-6 md:p-8 dark:shadow-[0px_0px_27px_0px_#2D2D2D]">
+        <div className="flex flex-col items-center gap-6">
+          {/* Header */}
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl">
+              <Clock className="w-5 h-5 text-primary animate-pulse" />
+            </div>
+            <h3 className="text-lg md:text-xl font-bold text-foreground">
+              Voting Closes In
+            </h3>
+          </div>
+
+          {/* Countdown Grid */}
+          <div className="grid grid-cols-4 gap-3 md:gap-4 w-full max-w-md">
+            <TimeUnit value={timeLeft.days} label="Days" />
+            <TimeUnit value={timeLeft.hours} label="Hours" />
+            <TimeUnit value={timeLeft.minutes} label="Mins" />
+            <TimeUnit value={timeLeft.seconds} label="Secs" />
+          </div>
+
+          {/* Footer Message */}
+          <p className="text-xs md:text-sm text-muted-foreground text-center">
+            Make sure to cast your vote before time runs out!
+          </p>
+        </div>
       </div>
-      <div className="grid grid-cols-4 gap-2">
-        <div className="text-center">
-          <div className="backdrop-blur-sm bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-lg p-2 mb-1 shadow-md">
-            <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
-              {timeLeft.days}
-            </span>
-          </div>
-          <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">Days</span>
-        </div>
-        <div className="text-center">
-          <div className="backdrop-blur-sm bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-lg p-2 mb-1 shadow-md">
-            <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
-              {timeLeft.hours}
-            </span>
-          </div>
-          <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">Hours</span>
-        </div>
-        <div className="text-center">
-          <div className="backdrop-blur-sm bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-lg p-2 mb-1 shadow-md">
-            <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
-              {timeLeft.minutes}
-            </span>
-          </div>
-          <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">Mins</span>
-        </div>
-        <div className="text-center">
-          <div className="backdrop-blur-sm bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-lg p-2 mb-1 shadow-md">
-            <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
-              {timeLeft.seconds}
-            </span>
-          </div>
-          <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">Secs</span>
-        </div>
+    </motion.div>
+  )
+}
+
+interface TimeUnitProps {
+  value: number
+  label: string
+}
+
+function TimeUnit({ value, label }: TimeUnitProps) {
+  return (
+    <div className="flex flex-col items-center">
+      <div className="relative w-full aspect-square rounded-xl overflow-hidden backdrop-blur-sm bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 flex items-center justify-center shadow-lg">
+        <span className="text-2xl md:text-4xl font-bold bg-gradient-to-br from-primary to-primary/60 bg-clip-text text-transparent">
+          {String(value).padStart(2, '0')}
+        </span>
       </div>
+      <span className="text-[10px] md:text-xs font-medium text-muted-foreground uppercase tracking-wider mt-2">
+        {label}
+      </span>
     </div>
   )
 }

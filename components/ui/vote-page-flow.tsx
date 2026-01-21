@@ -14,7 +14,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Skeleton } from "@/components/ui/skeleton";
 import { ShinyButton } from "@/components/ui/shiny-button";
 import { ProfileDropdown } from "@/components/ui/profile-dropdown";
-import { CountdownTimer } from "@/components/countdown-timer";
+import { CompactCountdown } from "@/components/compact-countdown";
 import { LogOut, ExternalLink, CheckCircle2, Linkedin, Vote, Users, Activity, TrendingUp } from "lucide-react";
 
 interface Candidate {
@@ -60,6 +60,13 @@ export const VotePageContent = ({
     }
   }, [status]);
 
+  // Check voting deadline and redirect if closed
+  useEffect(() => {
+    if (votingDeadline && votingClosed) {
+      router.push("/results");
+    }
+  }, [votingDeadline, votingClosed, router]);
+
   const fetchData = async () => {
     try {
       const [candidatesRes, voteStatusRes, settingsRes] = await Promise.all([
@@ -80,9 +87,11 @@ export const VotePageContent = ({
         const deadline = new Date(settingsData.votingDeadline);
         if (deadline <= new Date()) {
           setVotingClosed(true);
+        } else {
+          setVotingClosed(false); // Allow voting if deadline extended
         }
       } else {
-        setVotingClosed(false);
+        setVotingClosed(false); // No deadline = vote anytime
       }
     } catch (error) {
       console.error("Failed to fetch data:", error);
@@ -137,7 +146,7 @@ export const VotePageContent = ({
           <NavBar 
             leftItems={[
               { name: 'About', url: '/' },
-              { name: 'Contact', url: '/contact' },
+              { name: 'Candidates', url: '/candidates' },
               { name: 'Vote', url: '/vote' },
               { name: 'Results', url: '/results' },
             ]}
@@ -147,6 +156,7 @@ export const VotePageContent = ({
             showAuthButtons={false}
             rightItems={
               <>
+                {votingDeadline && <CompactCountdown deadline={votingDeadline} />}
                 <ThemeToggle />
                 <ProfileDropdown 
                   userName={session?.user?.name}
@@ -188,6 +198,7 @@ export const VotePageContent = ({
           showAuthButtons={false}
           rightItems={
             <>
+              {votingDeadline && <CompactCountdown deadline={votingDeadline} />}
               <ThemeToggle />
               <ProfileDropdown 
                 userName={session?.user?.name}
@@ -233,33 +244,6 @@ export const VotePageContent = ({
                 Select your preferred candidate below.
               </p>
             </motion.div>
-
-            {/* Countdown Timer */}
-            {votingDeadline && !votingClosed && (
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="mb-8 max-w-2xl mx-auto"
-              >
-                <CountdownTimer 
-                  deadline={votingDeadline} 
-                  onExpire={() => setVotingClosed(true)}
-                />
-              </motion.div>
-            )}
-
-            {votingClosed && (
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="mb-8 max-w-2xl mx-auto backdrop-blur-sm bg-red-500/10 border border-red-500/30 rounded-2xl p-6 shadow-xl"
-              >
-                <p className="text-center text-red-500 font-semibold">
-                  Voting has closed. Thank you for your participation!
-                </p>
-              </motion.div>
-            )}
 
             {/* Candidates Grid */}
             <motion.div 

@@ -11,6 +11,8 @@ import { NavBar } from "./tubelight-navbar";
 import { InfiniteGridBackground } from "./infinite-grid-background";
 import ShinyText from "./ShinyText";
 import { ShinyButton } from "./shiny-button";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { CompactCountdown } from "@/components/compact-countdown";
 
 interface SignUpPageProps {
   className?: string;
@@ -29,6 +31,7 @@ export const SignUpPage = ({
   const [success, setSuccess] = useState(false);
   const [otpStep, setOtpStep] = useState(false);
   const [otp, setOtp] = useState("");
+  const [votingDeadline, setVotingDeadline] = useState<string | null>(null);
   
   const [formData, setFormData] = useState({
     name: "",
@@ -37,6 +40,23 @@ export const SignUpPage = ({
     confirmPassword: "",
     linkedinUrl: "",
   });
+
+  useEffect(() => {
+    const fetchVotingDeadline = async () => {
+      try {
+        const response = await fetch('/api/admin/voting-settings');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.votingDeadline) {
+            setVotingDeadline(data.votingDeadline);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch voting deadline:', error);
+      }
+    };
+    fetchVotingDeadline();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -216,6 +236,12 @@ export const SignUpPage = ({
           logoSrc={logoSrc}
           companyName={companyName}
           showAuthButtons={true}
+          rightItems={
+            <>
+              {votingDeadline && <CompactCountdown deadline={votingDeadline} />}
+              <ThemeToggle />
+            </>
+          }
         />
 
         <div className="flex flex-1 flex-col lg:flex-row items-center justify-center px-4 lg:px-0 pt-20 lg:pt-0">
@@ -446,9 +472,9 @@ export const SignUpPage = ({
                   </div>
                 )}
                 
-                <p className="text-xs text-muted-foreground pt-4 text-center">
+                {/*<p className="text-xs text-muted-foreground pt-4 text-center">
                   By signing up, you agree to our <Link href="/terms" className="underline hover:text-foreground transition-colors">Terms</Link> and <Link href="/privacy" className="underline hover:text-foreground transition-colors">Privacy Policy</Link>.
-                </p>
+                </p>*/}
               </motion.div>
             </div>
           </div>

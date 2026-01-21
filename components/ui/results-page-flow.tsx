@@ -12,7 +12,7 @@ import { InfiniteGridBackground } from "@/components/ui/infinite-grid-background
 import ShinyText from "@/components/ui/ShinyText"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ProfileDropdown } from "@/components/ui/profile-dropdown"
-import { CountdownTimer } from "@/components/countdown-timer"
+import { CompactCountdown } from "@/components/compact-countdown"
 import { Trophy, Users, Vote, BarChart3, Linkedin, TrendingUp, Activity, Clock, ExternalLink } from "lucide-react"
 
 interface Candidate {
@@ -155,6 +155,7 @@ export const ResultsPageContent = ({
             showAuthButtons={false}
             rightItems={
               <>
+                {votingDeadline && <CompactCountdown deadline={votingDeadline} />}
                 <ThemeToggle />
                 <ProfileDropdown 
                   userName={session?.user?.name}
@@ -195,6 +196,7 @@ export const ResultsPageContent = ({
           showAuthButtons={false}
           rightItems={
             <>
+              {votingDeadline && <CompactCountdown deadline={votingDeadline} />}
               <ThemeToggle />
               <ProfileDropdown 
                 userName={session?.user?.name}
@@ -239,48 +241,20 @@ export const ResultsPageContent = ({
               </p>
             </motion.div>
 
-            {/* Countdown Timer */}
-            {votingDeadline && !votingClosed && (
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="mb-8 max-w-2xl mx-auto"
-              >
-                <CountdownTimer 
-                  deadline={votingDeadline} 
-                  onExpire={() => setVotingClosed(true)}
-                />
-              </motion.div>
-            )}
-
-            {votingClosed && (
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="mb-8 max-w-2xl mx-auto backdrop-blur-sm bg-green-500/10 border border-green-500/30 rounded-2xl p-6 shadow-xl"
-              >
-                <p className="text-center text-green-500 font-semibold flex items-center justify-center gap-2">
-                  <Trophy className="w-5 h-5" />
-                  Voting has concluded. Final results are displayed below.
-                </p>
-              </motion.div>
-            )}
-
             {/* Winner Spotlight */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="mb-12 max-w-4xl mx-auto"
+              className="mb-12 max-w-6xl mx-auto"
             >
               <div className="backdrop-blur-sm bg-card/30 border border-border rounded-2xl p-6 shadow-xl">
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
                       <Trophy className="w-5 h-5 text-white" />
                     </div>
-                    <h2 className="text-2xl font-bold text-foreground">Winner Spotlight</h2>
+                    <h2 className="text-xl sm:text-2xl font-bold text-foreground">Winner Spotlight</h2>
                   </div>
                   <div className="flex items-center gap-2 px-3 py-1.5 bg-primary/10 rounded-full">
                     <BarChart3 className="w-4 h-4 text-primary" />
@@ -320,8 +294,8 @@ export const ResultsPageContent = ({
                     </div>
                   </div>
                 ) : winner && winner.voteCount > 0 ? (
-                  <div className="flex items-center gap-5">
-                    <div className="relative">
+                  <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5">
+                    <div className="relative flex-shrink-0">
                       <div className="absolute inset-0 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full blur-md opacity-50 animate-pulse"></div>
                       <div className="relative w-20 h-20 rounded-full overflow-hidden ring-4 ring-amber-400 shadow-xl">
                         <Image
@@ -332,15 +306,15 @@ export const ResultsPageContent = ({
                         />
                       </div>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1.5">
+                    <div className="flex-1 min-w-0 text-center sm:text-left">
+                      <div className="flex flex-col sm:flex-row items-center sm:items-center gap-2 mb-1.5">
                         <h3 className="text-xl font-bold text-foreground truncate">{winner.name}</h3>
                         <div className="flex items-center gap-1 px-2 py-0.5 bg-amber-100/20 border border-amber-400/30 rounded-full">
                           <Trophy className="w-3 h-3 text-amber-500" />
                           <span className="text-xs font-bold text-amber-500">#1</span>
                         </div>
                       </div>
-                      <p className="text-sm text-muted-foreground mb-3 line-clamp-1">{winner.bio}</p>
+                      <p className="text-sm text-muted-foreground mb-3 line-clamp-2 sm:line-clamp-1">{winner.bio}</p>
                       <button
                         onClick={() => window.open(winner.linkedinUrl, "_blank")}
                         className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 border border-primary/30 rounded-full text-sm font-medium text-primary transition-colors"
@@ -365,23 +339,23 @@ export const ResultsPageContent = ({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="grid lg:grid-cols-3 gap-6"
+              className="grid lg:grid-cols-3 gap-4 sm:gap-6"
             >
               <div className="lg:col-span-2">
-                <div className="backdrop-blur-sm bg-card/30 border border-border rounded-2xl p-6 shadow-xl">
-                  <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-2xl font-bold text-foreground flex items-center gap-3">
-                      <div className="w-8 h-8 bg-primary/20 rounded-xl flex items-center justify-center">
-                        <Users className="w-5 h-5 text-primary" />
+                <div className="backdrop-blur-sm bg-card/30 border border-border rounded-2xl p-4 sm:p-6 shadow-xl">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-2">
+                    <h2 className="text-xl sm:text-2xl font-bold text-foreground flex items-center gap-2 sm:gap-3">
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 bg-primary/20 rounded-xl flex items-center justify-center">
+                        <Users className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                       </div>
                       Candidates Ranking
                     </h2>
-                    <div className="text-sm text-muted-foreground font-medium">
+                    <div className="text-xs sm:text-sm text-muted-foreground font-medium">
                       {candidates.length} Candidates
                     </div>
                   </div>
 
-                  <div className="space-y-3">
+                  <div className="space-y-2 sm:space-y-3">
                     {candidates.length === 0 ? (
                       <div className="text-center py-12">
                         <Users className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
@@ -396,57 +370,61 @@ export const ResultsPageContent = ({
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                            className="group relative backdrop-blur-sm bg-card/50 border border-border rounded-2xl p-4 md:p-5 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                            className="group relative backdrop-blur-sm bg-card/50 border border-border rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-5 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
                           >
                             {index === 0 && (
-                              <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg animate-bounce">
-                                <Trophy className="w-4 h-4 text-white" />
+                              <div className="absolute -top-2 -right-2 w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg animate-bounce">
+                                <Trophy className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
                               </div>
                             )}
                             
-                            <div className="flex items-center gap-4 mb-4">
-                              <div className={`relative w-14 h-14 ${
-                                index === 0 ? 'bg-gradient-to-br from-yellow-400 via-amber-400 to-orange-500 shadow-lg shadow-yellow-500/50' : 
-                                index === 1 ? 'bg-gradient-to-br from-gray-300 via-gray-400 to-gray-500 shadow-lg shadow-gray-500/50' : 
-                                index === 2 ? 'bg-gradient-to-br from-orange-400 via-amber-600 to-orange-700 shadow-lg shadow-orange-500/50' : 
-                                'bg-gradient-to-br from-blue-400 to-indigo-500 shadow-md'
-                              } rounded-2xl flex items-center justify-center font-bold text-white text-xl transition-transform duration-300 group-hover:scale-110`}>
-                                #{index + 1}
-                              </div>
-                              <div className="relative w-12 h-12 rounded-xl overflow-hidden ring-2 ring-primary/20 shadow-md flex-shrink-0">
-                                <Image
-                                  src={candidate.image}
-                                  alt={candidate.name}
-                                  fill
-                                  className="object-cover"
-                                />
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <h3 className="font-bold text-lg text-foreground truncate">{candidate.name}</h3>
-                                <p className="text-xs text-muted-foreground truncate">{candidate.bio}</p>
-                              </div>
-                              <button
-                                onClick={() => window.open(candidate.linkedinUrl, "_blank")}
-                                className="flex-shrink-0 w-10 h-10 bg-primary/10 hover:bg-primary hover:text-white rounded-xl flex items-center justify-center transition-all duration-300 group/btn hover:shadow-lg"
-                              >
-                                <Linkedin className="w-5 h-5 text-primary group-hover/btn:text-white transition-colors" />
-                              </button>
-                              <div className="flex-shrink-0 text-right min-w-[80px]">
-                                <div className="text-2xl font-bold text-foreground">
-                                  {candidate.voteCount.toLocaleString()}
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+                              <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
+                                <div className={`relative w-12 h-12 sm:w-14 sm:h-14 ${
+                                  index === 0 ? 'bg-gradient-to-br from-yellow-400 via-amber-400 to-orange-500 shadow-lg shadow-yellow-500/50' : 
+                                  index === 1 ? 'bg-gradient-to-br from-gray-300 via-gray-400 to-gray-500 shadow-lg shadow-gray-500/50' : 
+                                  index === 2 ? 'bg-gradient-to-br from-orange-400 via-amber-600 to-orange-700 shadow-lg shadow-orange-500/50' : 
+                                  'bg-gradient-to-br from-blue-400 to-indigo-500 shadow-md'
+                                } rounded-xl sm:rounded-2xl flex items-center justify-center font-bold text-white text-lg sm:text-xl transition-transform duration-300 group-hover:scale-110`}>
+                                  #{index + 1}
                                 </div>
-                                <div className="text-xs text-muted-foreground font-medium">
-                                  votes
+                                <div className="relative w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl overflow-hidden ring-2 ring-primary/20 shadow-md flex-shrink-0">
+                                  <Image
+                                    src={candidate.image}
+                                    alt={candidate.name}
+                                    fill
+                                    className="object-cover"
+                                  />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <h3 className="font-bold text-base sm:text-lg text-foreground truncate">{candidate.name}</h3>
+                                  <p className="text-xs text-muted-foreground truncate line-clamp-1">{candidate.bio}</p>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-2 sm:gap-3 ml-auto">
+                                <button
+                                  onClick={() => window.open(candidate.linkedinUrl, "_blank")}
+                                  className="flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 bg-primary/10 hover:bg-primary hover:text-white rounded-lg sm:rounded-xl flex items-center justify-center transition-all duration-300 group/btn hover:shadow-lg"
+                                >
+                                  <Linkedin className="w-4 h-4 sm:w-5 sm:h-5 text-primary group-hover/btn:text-white transition-colors" />
+                                </button>
+                                <div className="flex-shrink-0 text-right min-w-[60px] sm:min-w-[80px]">
+                                  <div className="text-xl sm:text-2xl font-bold text-foreground">
+                                    {candidate.voteCount.toLocaleString()}
+                                  </div>
+                                  <div className="text-[10px] sm:text-xs text-muted-foreground font-medium">
+                                    votes
+                                  </div>
                                 </div>
                               </div>
                             </div>
                             
-                            <div className="space-y-2">
-                              <div className="flex items-center justify-between text-sm">
+                            <div className="space-y-1.5 sm:space-y-2">
+                              <div className="flex items-center justify-between text-xs sm:text-sm">
                                 <span className="font-medium text-muted-foreground">Vote Share</span>
                                 <span className="font-bold text-foreground">{percentage.toFixed(1)}%</span>
                               </div>
-                              <div className="relative w-full h-3 bg-muted rounded-full overflow-hidden">
+                              <div className="relative w-full h-2.5 sm:h-3 bg-muted rounded-full overflow-hidden">
                                 <div
                                   className={`absolute top-0 left-0 h-full bg-gradient-to-r ${getProgressBarColor(index)} transition-all duration-700 ease-out`}
                                   style={{ width: `${percentage}%` }}
@@ -465,11 +443,11 @@ export const ResultsPageContent = ({
 
               {/* Live Activity */}
               <div className="lg:col-span-1">
-                <div className="backdrop-blur-sm bg-card/30 border border-border rounded-2xl p-6 shadow-xl sticky top-24">
-                  <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
-                      <div className="w-8 h-8 bg-primary/20 rounded-xl flex items-center justify-center">
-                        <Activity className="w-5 h-5 text-primary" />
+                <div className="backdrop-blur-sm bg-card/30 border border-border rounded-2xl p-4 sm:p-6 shadow-xl lg:sticky lg:top-24">
+                  <div className="flex items-center justify-between mb-4 sm:mb-6">
+                    <h2 className="text-lg sm:text-xl font-bold text-foreground flex items-center gap-2">
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 bg-primary/20 rounded-xl flex items-center justify-center">
+                        <Activity className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                       </div>
                       Live Activity
                     </h2>
@@ -488,7 +466,7 @@ export const ResultsPageContent = ({
                       <p className="text-xs text-muted-foreground">Votes will appear here in real-time</p>
                     </div>
                   ) : (
-                    <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2">
+                    <div className="space-y-2 sm:space-y-3 max-h-[400px] sm:max-h-[600px] overflow-y-auto pr-2">
                       {voters.slice(0, 10).map((voter, index) => {
                         if (!voter.vote || !voter.vote.candidate) return null
                         
@@ -515,11 +493,11 @@ export const ResultsPageContent = ({
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.5, delay: 0.6 + index * 0.05 }}
                             onClick={handleVoterClick}
-                            className={`group flex items-center gap-3 p-3 rounded-xl backdrop-blur-sm bg-card/50 border border-border hover:border-primary/30 transition-all duration-300 ${
+                            className={`group flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3 rounded-lg sm:rounded-xl backdrop-blur-sm bg-card/50 border border-border hover:border-primary/30 transition-all duration-300 ${
                               voter.linkedinUrl ? 'cursor-pointer hover:-translate-y-1 hover:shadow-md' : 'cursor-default'
                             }`}
                           >
-                            <div className={`relative w-11 h-11 rounded-xl flex items-center justify-center text-white font-bold overflow-hidden shadow-md ${getAvatarColor(index)} ring-2 ring-border transition-transform duration-300 group-hover:scale-110`}>
+                            <div className={`relative w-9 h-9 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl flex items-center justify-center text-white font-bold overflow-hidden shadow-md ${getAvatarColor(index)} ring-2 ring-border transition-transform duration-300 group-hover:scale-110`}>
                               {voter.image ? (
                                 <Image
                                   src={voter.image}
@@ -528,25 +506,25 @@ export const ResultsPageContent = ({
                                   className="object-cover"
                                 />
                               ) : (
-                                <span className="text-base">{(voter.name || voter.email).charAt(0).toUpperCase()}</span>
+                                <span className="text-sm sm:text-base">{(voter.name || voter.email).charAt(0).toUpperCase()}</span>
                               )}
                             </div>
                             <div className="flex-1 min-w-0">
-                              <p className="text-sm font-bold text-foreground truncate">
+                              <p className="text-xs sm:text-sm font-bold text-foreground truncate">
                                 {voter.name || voter.email.split('@')[0]}
                               </p>
-                              <p className="text-xs text-muted-foreground truncate">
+                              <p className="text-[10px] sm:text-xs text-muted-foreground truncate">
                                 {formatDateTime(voter.vote.createdAt)}
                               </p>
                             </div>
-                            <div className="flex flex-col items-end gap-1">
-                              <div className="text-xs font-medium text-muted-foreground flex items-center gap-1">
-                                <Clock className="w-3 h-3" />
-                                {formatTimeAgo(voter.vote.createdAt)}
+                            <div className="flex flex-col items-end gap-0.5 sm:gap-1">
+                              <div className="text-[10px] sm:text-xs font-medium text-muted-foreground flex items-center gap-0.5 sm:gap-1">
+                                <Clock className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+                                <span className="hidden xs:inline">{formatTimeAgo(voter.vote.createdAt)}</span>
                               </div>
                               {voter.linkedinUrl && (
-                                <div className="w-6 h-6 bg-primary/10 group-hover:bg-primary rounded-lg flex items-center justify-center transition-all duration-300 opacity-0 group-hover:opacity-100">
-                                  <Linkedin className="w-3 h-3 text-primary group-hover:text-white" />
+                                <div className="w-5 h-5 sm:w-6 sm:h-6 bg-primary/10 group-hover:bg-primary rounded-md sm:rounded-lg flex items-center justify-center transition-all duration-300 opacity-0 group-hover:opacity-100">
+                                  <Linkedin className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-primary group-hover:text-white" />
                                 </div>
                               )}
                             </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -9,6 +9,8 @@ import { NavBar } from "./tubelight-navbar";
 import { InfiniteGridBackground } from "./infinite-grid-background";
 import ShinyText from "./ShinyText";
 import { ShinyButton } from "./shiny-button";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { CompactCountdown } from "@/components/compact-countdown";
 
 interface SignInPageProps {
   className?: string;
@@ -17,6 +19,7 @@ interface SignInPageProps {
   onLinkedInSignIn?: () => Promise<void>;
   logoSrc?: string;
   companyName?: string;
+  error?: string;
 }
 
 export const SignInPage = ({ 
@@ -25,12 +28,30 @@ export const SignInPage = ({
   onGoogleSignIn,
   onLinkedInSignIn,
   logoSrc = "/logo.png",
-  companyName = "Matrix Vote"
+  companyName = "Matrix Vote",
+  error
 }: SignInPageProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);  const [votingDeadline, setVotingDeadline] = useState<string | null>(null)
 
+  useEffect(() => {
+    const fetchVotingDeadline = async () => {
+      try {
+        const response = await fetch('/api/admin/voting-settings');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.votingDeadline) {
+            setVotingDeadline(data.votingDeadline);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch voting deadline:', error);
+      }
+    };
+    fetchVotingDeadline();
+  }, []);
+  
   const handleEmailPasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (email && password) {
@@ -86,6 +107,12 @@ export const SignInPage = ({
           logoSrc={logoSrc}
           companyName={companyName}
           showAuthButtons={true}
+          rightItems={
+            <>
+              {votingDeadline && <CompactCountdown deadline={votingDeadline} />}
+              <ThemeToggle />
+            </>
+          }
         />
 
         <div className="flex flex-1 flex-col lg:flex-row items-center justify-center px-4 lg:px-0 pt-20 lg:pt-0">
@@ -186,6 +213,15 @@ export const SignInPage = ({
                     <div className="h-px bg-border flex-1" />
                   </div>
                   
+                  {/* Error Message */}
+                  {error && (
+                    <div className="backdrop-blur-sm bg-red-500/10 border border-red-500/30 rounded-2xl p-4">
+                      <p className="text-sm text-red-600 dark:text-red-400 text-center">
+                        {error}
+                      </p>
+                    </div>
+                  )}
+                  
                   {/* Email/Password Form */}
                   <form onSubmit={handleEmailPasswordSubmit} className="space-y-3">
                     <input 
@@ -234,9 +270,9 @@ export const SignInPage = ({
                   </div>
                 </div>
                 
-                <p className="text-xs text-muted-foreground pt-4 text-center">
+                {/*<p className="text-xs text-muted-foreground pt-4 text-center">
                   By signing in, you agree to our <Link href="/terms" className="underline hover:text-foreground transition-colors">Terms</Link> and <Link href="/privacy" className="underline hover:text-foreground transition-colors">Privacy Policy</Link>.
-                </p>
+                </p>*/}
               </motion.div>
             </div>
           </div>

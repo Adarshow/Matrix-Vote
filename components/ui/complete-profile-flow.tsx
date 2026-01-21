@@ -11,6 +11,8 @@ import { NavBar } from "./tubelight-navbar";
 import { InfiniteGridBackground } from "./infinite-grid-background";
 import ShinyText from "./ShinyText";
 import { ShinyButton } from "./shiny-button";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { CompactCountdown } from "@/components/compact-countdown";
 
 interface CompleteProfilePageProps {
   className?: string;
@@ -28,6 +30,24 @@ export const CompleteProfilePage = ({
   const [linkedinUrl, setLinkedinUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [votingDeadline, setVotingDeadline] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchVotingDeadline = async () => {
+      try {
+        const response = await fetch('/api/admin/voting-settings');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.votingDeadline) {
+            setVotingDeadline(data.votingDeadline);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch voting deadline:', error);
+      }
+    };
+    fetchVotingDeadline();
+  }, []);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -112,6 +132,12 @@ export const CompleteProfilePage = ({
           logoSrc={logoSrc}
           companyName={companyName}
           showAuthButtons={false}
+          rightItems={
+            <>
+              {votingDeadline && <CompactCountdown deadline={votingDeadline} />}
+              <ThemeToggle />
+            </>
+          }
         />
 
         <div className="flex flex-1 flex-col lg:flex-row items-center justify-center px-4 lg:px-0 pt-20 lg:pt-0">
