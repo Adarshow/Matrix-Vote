@@ -246,7 +246,7 @@ export const ResultsPageContent = ({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="mb-12 max-w-6xl mx-auto"
+              className="mb-12 max-w-4xl mx-auto"
             >
               <div className="backdrop-blur-sm bg-card/30 border border-border rounded-2xl p-6 shadow-xl">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
@@ -339,9 +339,9 @@ export const ResultsPageContent = ({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="grid lg:grid-cols-3 gap-4 sm:gap-6"
+              className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6"
             >
-              <div className="lg:col-span-2">
+              <div className="lg:col-span-2 w-full">
                 <div className="backdrop-blur-sm bg-card/30 border border-border rounded-2xl p-4 sm:p-6 shadow-xl">
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-2">
                     <h2 className="text-xl sm:text-2xl font-bold text-foreground flex items-center gap-2 sm:gap-3">
@@ -398,7 +398,7 @@ export const ResultsPageContent = ({
                                 </div>
                                 <div className="flex-1 min-w-0">
                                   <h3 className="font-bold text-base sm:text-lg text-foreground truncate">{candidate.name}</h3>
-                                  <p className="text-xs text-muted-foreground truncate line-clamp-1">{candidate.bio}</p>
+                                  <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">{candidate.bio}</p>
                                 </div>
                               </div>
                               <div className="flex items-center gap-2 sm:gap-3 ml-auto">
