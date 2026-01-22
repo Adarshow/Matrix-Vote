@@ -265,11 +265,13 @@ export const ResultsPageContent = ({
                 </div>
 
                 {isTie ? (
-                  <div className="text-center py-6">
-                    <div className="flex items-center justify-center gap-2 mb-4">
+                  <div className="text-center py-6 sm:py-8">
+                    {/* Profile Images - Responsive sizing */}
+                    <div className="flex items-center justify-center gap-3 sm:gap-4 mb-5 sm:mb-6">
                       {winners.slice(0, 3).map((w, idx) => (
-                        <div key={w.id} className={`relative ${idx === 1 ? 'z-20 scale-110' : idx === 0 ? 'z-10' : 'z-0'}`}>
-                          <div className="relative w-16 h-16 rounded-full overflow-hidden ring-4 ring-primary/20 shadow-xl">
+                        <div key={w.id} className={`relative ${idx === 1 ? 'z-20 scale-110 sm:scale-125' : idx === 0 ? 'z-10 sm:scale-105' : 'z-0'}`}>
+                          <div className="absolute inset-0 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full blur-lg opacity-40 animate-pulse"></div>
+                          <div className="relative w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-full overflow-hidden ring-4 ring-amber-400/30 shadow-2xl">
                             <Image
                               src={w.image}
                               alt={w.name}
@@ -280,16 +282,22 @@ export const ResultsPageContent = ({
                         </div>
                       ))}
                     </div>
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full mb-3">
-                      <Trophy className="w-5 h-5 text-primary" />
-                      <span className="text-lg font-bold text-primary">It's a Tie!</span>
+                    
+                    {/* Tie Badge */}
+                    <div className="inline-flex items-center gap-2 sm:gap-3 px-5 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-amber-400/20 via-orange-400/20 to-amber-400/20 border border-amber-400/40 rounded-full mb-3 sm:mb-4 shadow-lg">
+                      <Trophy className="w-5 h-5 sm:w-6 sm:h-6 text-amber-500" />
+                      <span className="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">It's a Tie!</span>
                     </div>
-                    <p className="text-sm text-muted-foreground mb-2">
-                      {winners.length} candidates are tied with {maxVotes} vote{maxVotes !== 1 ? 's' : ''} each
+                    
+                    {/* Description */}
+                    <p className="text-sm sm:text-base text-muted-foreground mb-5 sm:mb-6 max-w-md mx-auto">
+                      {winners.length} candidates are tied with <span className="font-bold text-foreground">{maxVotes}</span> vote{maxVotes !== 1 ? 's' : ''} each
                     </p>
-                    <div className="flex flex-wrap gap-2 justify-center mt-4">
+                    
+                    {/* Candidate Names */}
+                    <div className="flex flex-wrap gap-2 sm:gap-3 justify-center mt-4 sm:mt-6 max-w-2xl mx-auto">
                       {winners.map((w) => (
-                        <span key={w.id} className="px-3 py-1 backdrop-blur-sm bg-card/50 border border-border rounded-full text-sm font-medium text-foreground">
+                        <span key={w.id} className="px-4 sm:px-5 py-2 sm:py-2.5 backdrop-blur-sm bg-gradient-to-br from-card/80 to-card/60 border border-border hover:border-primary/50 rounded-full text-sm sm:text-base font-semibold text-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg">
                           {w.name}
                         </span>
                       ))}
@@ -468,8 +476,8 @@ export const ResultsPageContent = ({
                       <p className="text-xs text-muted-foreground">Votes will appear here in real-time</p>
                     </div>
                   ) : (
-                    <div className="space-y-2 sm:space-y-3 max-h-[400px] sm:max-h-[600px] overflow-y-auto pr-2">
-                      {voters.slice(0, 10).map((voter, index) => {
+                    <div className="space-y-2 sm:space-y-3 max-h-[320px] sm:max-h-[380px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent hover:scrollbar-thumb-primary/40">
+                      {voters.slice(0, 5).map((voter, index) => {
                         if (!voter.vote || !voter.vote.candidate) return null
                         
                         const formatDateTime = (dateString: string) => {
