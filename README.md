@@ -29,11 +29,14 @@ A secure, production-ready online voting platform built for the White Matrix Int
   - Vote timestamp tracking
 
 ### Additional Features
+- **About Page** - Comprehensive platform information with voting procedure and rules
+- **Candidates Page** - Public showcase of all candidates with stats and profiles  
 - **Dark Mode** - System-aware theme toggle
 - **Responsive Design** - Mobile-first approach
 - **Loading States** - Skeleton loaders for better UX
-- **Professional UI** - Clean design using shadcn/ui components
+- **Professional UI** - Clean design with custom animated components
 - **LinkedIn Integration** - Clickable LinkedIn profiles for candidates and voters
+- **Custom Animations** - ShinyText, GlowingEffect, Tubelight Navbar components
 
 ### Admin Dashboard
 - **Secure Admin Portal** - Separate JWT-based authentication
@@ -45,48 +48,61 @@ A secure, production-ready online voting platform built for the White Matrix Int
   - Voter engagement metrics (Doughnut chart)
 - **User Management** - View all registered users with LinkedIn profiles
 - **Voting Deadline** - Set and manage voting closing date/time
-- **Countdown Timer** - Display voting deadline across all pages
+- **Countdown Timer** - CompactCountdown displays on all public pages
 - **PDF Reports** - Generate comprehensive voting analytics reports
 - **Password Management** - Change admin password securely
 
 ## 🛠️ Tech Stack
 
 ### Frontend + Backend
-- **Next.js 14** (App Router)
-- **TypeScript** - Type-safe development
-- **Tailwind CSS** - Utility-first styling
-- **shadcn/ui** - High-quality React components
-- **Chart.js** - Data visualization for analytics
-- **jsPDF** - PDF report generation
+- **Next.js 14.2.18** (App Router)
+- **TypeScript 5.6.3** - Type-safe development
+- **React 18.3.1** - UI library
+- **Tailwind CSS 3.4.15** - Utility-first styling
+- **Framer Motion 12.26.2** - Animation library
+- **Motion 12.27.0** - Additional animation utilities
+- **Radix UI** - Accessible component primitives (Dialog, Label, Tabs)
+- **Custom UI Components** - ShinyText, GlowingEffect, TubelightNavbar
+- **Chart.js 4.4.1** - Data visualization for analytics
+- **react-chartjs-2 5.2.0** - React wrapper for Chart.js
+- **jsPDF 2.5.2** - PDF report generation
+- **Lucide React 0.460.0** - Icon library
 
 ### Authentication
-- **NextAuth.js v4** - Complete auth solution
+- **NextAuth.js 4.24.10** - Complete auth solution
 - **Google OAuth** - Sign in with Google
-- **LinkedIn OAuth** - Sign in with LinkedIn
-- **bcryptjs** - Password hashing
-- **jose** - JWT signing and verification for admin auth
+- **LinkedIn OAuth** - Sign in with LinkedIn  
+- **bcryptjs 2.4.3** - Password hashing (10 rounds)
+- **jose 5.9.6** - JWT signing and verification for admin auth
+- **OTP Verification** - Email-based one-time password for registration
+- **Password Reset** - Secure forgot password flow with email tokens
 
 ### Email Functionality
+- **nodemailer 7.0.12** - SMTP email client
+- **Gmail Integration** - Secure email delivery via Gmail SMTP
+- **OTP Verification for Registration**
+  - One-Time Password sent via email during signup
+  - Time-limited OTP validation (stored in memory)
+  - Prevents unauthorized registrations
 - **Forgot Password Implementation**
-  - Users can reset their passwords using the "Forgot Password" feature.
-  - The platform uses Gmail SMTP to send password reset emails securely.
-  - The reset link is valid for a limited time to ensure security.
-
-  - **OTP Verification for Registration**
-  - During registration, users receive a One-Time Password (OTP) via email.
-  - Gmail SMTP is used to send the OTP securely.
-  - The OTP must be entered within a specific time frame to complete registration.
+  - Password reset link sent via email
+  - Secure token-based reset flow
+  - Time-limited reset tokens for security
 
 ### Database
-- **PostgreSQL** - Production database
-- **Prisma ORM** - Type-safe database client
-- **Database Level Constraints** - Prevent duplicate votes
+- **PostgreSQL 15+** - Production-ready relational database
+- **Prisma ORM 5.22.0** - Type-safe database client with migrations
+- **Database Level Constraints** - Prevent duplicate votes via unique constraint
+- **Soft Deletes** - Archive system for candidates (isArchived flag)
+- **Connection Pooling** - PgBouncer support for serverless deployments
 
 ### Deployment
-- **Vercel Ready** - Optimized for deployment
-- **Docker Support** - Full containerization with docker-compose
-- **Environment Variables** - Secure configuration
-- **Database Options** - Supabase, Neon, Railway compatible
+- **Vercel Ready** - Optimized for Edge deployment with automatic builds
+- **Docker Support** - Full containerization with docker-compose (PostgreSQL + App)
+- **Environment Variables** - Secure configuration management
+- **Database Options** - Supabase, Neon, Railway, PlanetScale compatible
+- **CI/CD** - GitHub integration for automated deployments
+- **Production Optimized** - Multi-stage Docker builds, image optimization
 
 ## 📁 Project Structure
 
@@ -130,19 +146,34 @@ white-matrix-voting/
 │   └── globals.css
 ├── components/
 │   ├── ui/
+│   │   ├── about-page-flow.tsx
+│   │   ├── admin-login-flow.tsx
 │   │   ├── button.tsx
-│   │   ├── input.tsx
+│   │   ├── candidates-page-flow.tsx
 │   │   ├── card.tsx
-│   │   ├── label.tsx
+│   │   ├── complete-profile-flow.tsx
 │   │   ├── dialog.tsx
+│   │   ├── forgot-password-flow.tsx
+│   │   ├── glowing-effect.tsx
+│   │   ├── infinite-grid-background.tsx
+│   │   ├── input.tsx
+│   │   ├── label.tsx
+│   │   ├── profile-dropdown.tsx
+│   │   ├── reset-password-flow.tsx
+│   │   ├── results-page-flow.tsx
+│   │   ├── shiny-button.tsx
+│   │   ├── ShinyText.tsx
+│   │   ├── sign-in-flow-1.tsx
+│   │   ├── sign-up-flow.tsx
 │   │   ├── skeleton.tsx
-│   │   ├── badge.tsx
 │   │   ├── table.tsx
 │   │   ├── tabs.tsx
-│   │   ├── alert.tsx
-│   │   ├── select.tsx
-│   │   └── textarea.tsx
-│   ├── countdown-timer.tsx
+│   │   ├── textarea.tsx
+│   │   ├── the-infinite-grid.tsx
+│   │   ├── tubelight-navbar.tsx
+│   │   └── vote-page-flow.tsx
+│   ├── compact-countdown.tsx
+│   ├── index.ts
 │   ├── providers.tsx
 │   └── theme-toggle.tsx
 ├── lib/
@@ -157,31 +188,25 @@ white-matrix-voting/
 │   └── migrations/
 │       ├── 000_init/migration.sql
 │       └── 001_add_admin_and_voting_settings/migration.sql
+├── public/
 ├── middleware.ts
+├── .dockerignore
+├── .env.docker
 ├── .env.example
-├── .env
+├── .gitignore
+├── Dockerfile
+├── docker-compose.yml
+├── docker-start.ps1
+├── docker-start.sh
+├── next.config.js
 ├── package.json
-├── tsconfig.json
-├── tailwind.config.js
 ├── postcss.config.js
-└── next.config.js
-```
-│   ├── providers.tsx
-│   └── theme-toggle.tsx
-├── lib/
-│   ├── auth.ts
-│   ├── prisma.ts
-│   └── utils.ts
-├── prisma/
-│   ├── schema.prisma
-│   └── seed.ts
-├── .env.example
-├── .env
-├── package.json
-├── tsconfig.json
+├── setup.ps1
 ├── tailwind.config.js
-├── postcss.config.js
-└── next.config.js
+├── tsconfig.json
+├── DEPLOYMENT.md
+├── DOCKER.md
+└── README.md
 ```
 
 ## 🚀 Getting Started
@@ -242,14 +267,7 @@ This interactive wizard will guide you through the entire setup process includin
 - PostgreSQL database (local or cloud)
 - Google OAuth credentials (optional)
 - LinkedIn OAuth credentials (optional)
-- Gmail Credentials
-  How to get a Gmail App Password:
-    1. Go to your Google Account settings
-    2. Enable 2-Step Verification if not already enabled
-    3. Visit https://myaccount.google.com/apppasswords
-    4. Select "Mail" and "Other (Custom name)", enter "White Matrix"
-    5. Copy the 16-character password (no spaces)
-    6. Paste it as GMAIL_PASS in .env
+- Gmail account with app password (required for OTP & password reset)
 
 ### Installation
 
@@ -281,9 +299,19 @@ This interactive wizard will guide you through the entire setup process includin
    GOOGLE_CLIENT_SECRET=""
    LINKEDIN_CLIENT_ID=""
    LINKEDIN_CLIENT_SECRET=""
-   GMAIL_USER=
-   GMAIL_PASS=
+   
+   # Required for OTP verification and password reset
+   GMAIL_USER="your-email@gmail.com"
+   GMAIL_PASS="your-16-character-app-password"
    ```
+   
+   **How to get Gmail App Password:**
+   1. Go to your Google Account settings
+   2. Enable 2-Step Verification if not already enabled
+   3. Visit https://myaccount.google.com/apppasswords
+   4. Select "Mail" and "Other (Custom name)", enter "White Matrix"
+   5. Copy the 16-character password (no spaces)
+   6. Paste it as GMAIL_PASS in .env
 
 4. **Set up the database**
    ```bash
@@ -409,7 +437,29 @@ SET password = 'your_bcrypt_hash_here'
 WHERE email = 'admin@whitematrix.com';
 ```
 
-## 📊 Database Schema
+## � Available Scripts
+
+```bash
+# Development
+npm run dev              # Start development server on localhost:3000
+npm run build            # Build production bundle
+npm run start            # Start production server
+npm run lint             # Run ESLint
+
+# Database
+npm run postinstall      # Auto-generates Prisma Client (runs after npm install)
+npm run db:push          # Push schema changes to database (no migration)
+npm run db:seed          # Seed database with sample candidates
+npm run admin:seed       # Create default admin user
+
+# Docker
+npm run docker:up        # Start Docker containers
+npm run docker:down      # Stop Docker containers  
+npm run docker:logs      # View Docker logs
+npm run docker:build     # Rebuild and start Docker containers
+```
+
+## �📊 Database Schema
 
 ### User Model
 - Stores user authentication data
@@ -440,14 +490,35 @@ WHERE email = 'admin@whitematrix.com';
 
 ## 🎯 Usage Flow
 
+### For Public Users (Not Logged In)
+1. **Landing Page**
+   - View platform overview
+   - Access About page for detailed information
+   - View Candidates page to see all participants
+   - See CompactCountdown if voting deadline is set
+
+2. **About Page**
+   - Learn about the platform and its features
+   - Understand the voting procedure (4 steps)
+   - Review voting rules and guidelines
+   - Call-to-action to register or view candidates
+
+3. **Candidates Page**
+   - Browse all candidates without logging in
+   - View candidate profiles and bios
+   - See total candidates count and live voting status
+   - LinkedIn profiles accessible
+
 ### For Voters
 1. **Register/Login**
    - User creates account or signs in
    - OAuth options available (Google/LinkedIn)
    - OTP verification for email registration
+   - Complete profile with LinkedIn URL
 
 2. **Vote**
-   - View candidates with profiles
+   - Dynamic navigation based on vote status
+   - View candidates with detailed profiles
    - See countdown timer if voting deadline is set
    - Click "Vote" button
    - Confirm vote in modal dialog
@@ -455,8 +526,10 @@ WHERE email = 'admin@whitematrix.com';
 
 3. **Results**
    - Automatic redirect after voting
-   - View live vote counts
+   - View live vote counts with percentages
+   - Winner spotlight with glowing effect
    - See all voters with LinkedIn links
+   - Live activity feed (most recent votes)
    - Updates every 5 seconds
 
 ### For Administrators
@@ -491,24 +564,80 @@ WHERE email = 'admin@whitematrix.com';
 
 ## 🔒 Security Features
 
-- Password hashing with bcrypt (10 rounds)
-- JWT session tokens
-- Protected API routes
-- Database-level unique constraints
-- Input validation with Zod
-- CSRF protection via NextAuth
-- Secure environment variables
+- **Password Security**
+  - bcrypt hashing with 10 salt rounds
+  - Minimum password requirements enforced
+  - Secure password reset with time-limited tokens
+  
+- **Authentication**
+  - JWT session tokens via NextAuth.js
+  - Separate admin authentication with jose JWT
+  - HTTP-only cookies for session management
+  - Token expiration and rotation
+  
+- **API Security**
+  - Protected API routes with middleware
+  - Role-based access control (admin vs user)
+  - Request validation with Zod schemas
+  - CSRF protection via NextAuth
+  
+- **Database Security**
+  - Unique constraints prevent duplicate votes
+  - SQL injection protection via Prisma ORM
+  - Connection string encryption
+  - Database-level foreign key constraints
+  
+- **Application Security**
+  - Environment variable isolation
+  - Input sanitization on all forms
+  - XSS protection via React
+  - Rate limiting on sensitive endpoints (OTP, password reset)
+  
+- **Email Security**
+  - App-specific passwords for Gmail
+  - Time-limited OTP codes (stored in-memory)
+  - Secure password reset tokens
+  - No sensitive data in email content
 
 ## 🎨 UI/UX Features
 
-- Clean, professional design
-- Dark mode support
-- Responsive on all devices
-- Loading skeletons
-- Confirmation modals
-- Real-time updates
-- Error handling
-- Success feedback
+- **Modern Design System**
+  - Custom animated components (ShinyText, GlowingEffect)
+  - Tubelight Navbar with dynamic highlighting
+  - Infinite Grid Background animations
+  - Consistent color palette with CSS variables
+  
+- **Responsive Design**
+  - Mobile-first approach
+  - Breakpoint system (xs, sm, md, lg, xl)
+  - Touch-friendly interactions
+  - Optimized for all screen sizes
+  
+- **User Experience**
+  - Loading skeletons for better perceived performance
+  - Confirmation modals for critical actions
+  - Real-time updates without page refresh
+  - Success/error feedback with toast notifications
+  - Profile dropdown with quick actions
+  
+- **Accessibility**
+  - Radix UI primitives for a11y
+  - Keyboard navigation support
+  - ARIA labels and roles
+  - Semantic HTML structure
+  
+- **Theme Support**
+  - Dark mode with system preference detection
+  - Smooth theme transitions
+  - Theme toggle in navbar
+  - Persistent theme preference
+  
+- **Visual Feedback**
+  - Hover effects and transitions
+  - Progress bars with percentages
+  - Winner spotlight with glowing effect
+  - Live activity feed animations
+  - Card hover states with scale effects
 
 
 ## 📄 License

@@ -31,15 +31,21 @@ GOOGLE_CLIENT_SECRET=your_google_client_secret
 LINKEDIN_CLIENT_ID=your_linkedin_client_id
 LINKEDIN_CLIENT_SECRET=your_linkedin_client_secret
 
-# Optional (for email)
+# Required (for OTP & Password Reset)
 GMAIL_USER=your-email@gmail.com
-GMAIL_PASS=your_app_password
+GMAIL_PASS=your-16-character-app-password
 ```
 
 Generate `NEXTAUTH_SECRET`:
 ```bash
 openssl rand -base64 32
 ```
+
+**Get Gmail App Password:**
+1. Visit https://myaccount.google.com/apppasswords
+2. Enable 2-Step Verification first
+3. Create app password for "Mail" → "Other (White Matrix)"
+4. Copy the 16-character password (no spaces)
 
 ### 2. Build and Start
 

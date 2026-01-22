@@ -53,11 +53,24 @@
    DATABASE_URL=your_supabase_connection_string
    NEXTAUTH_URL=https://your-project.vercel.app
    NEXTAUTH_SECRET=run: openssl rand -base64 32
+   
+   # Optional OAuth
    GOOGLE_CLIENT_ID=your_google_client_id
    GOOGLE_CLIENT_SECRET=your_google_client_secret
    LINKEDIN_CLIENT_ID=your_linkedin_client_id
    LINKEDIN_CLIENT_SECRET=your_linkedin_client_secret
+   
+   # Required for OTP & Password Reset
+   GMAIL_USER=your-email@gmail.com
+   GMAIL_PASS=your-16-character-app-password
    ```
+   
+   **How to get Gmail App Password:**
+   1. Go to https://myaccount.google.com/apppasswords
+   2. Enable 2-Step Verification first if not enabled
+   3. Create app password for "Mail" → "Other (White Matrix)"
+   4. Copy the 16-character password (remove spaces)
+   5. Add to Vercel environment variables
 
 4. **Deploy**
    - Click "Deploy"

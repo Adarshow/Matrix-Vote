@@ -7,7 +7,7 @@ async function main() {
   console.log("Starting admin seed...")
 
   // Create default admin user
-  const adminEmail = "admin@whitematrix.com"
+  const adminEmail = "admin@matrixvote.com"
   const adminPassword = "admin123" // Change this in production!
 
   // Check if admin already exists

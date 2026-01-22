@@ -28,6 +28,8 @@ if (-not (Test-Path .env)) {
     Write-Host "⚠️  IMPORTANT: Please edit .env file with your configuration:" -ForegroundColor Yellow
     Write-Host "   - Set a secure DB_PASSWORD" -ForegroundColor Yellow
     Write-Host "   - Generate NEXTAUTH_SECRET with: openssl rand -base64 32" -ForegroundColor Yellow
+    Write-Host "   - Add Gmail credentials for OTP & password reset" -ForegroundColor Yellow
+    Write-Host "     Get app password: https://myaccount.google.com/apppasswords" -ForegroundColor Cyan
     Write-Host "   - Add OAuth credentials (optional)" -ForegroundColor Yellow
     Write-Host ""
     Read-Host "Press Enter after you've edited .env file to continue"

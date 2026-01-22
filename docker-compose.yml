@@ -45,7 +45,7 @@ services:
       LINKEDIN_CLIENT_ID: ${LINKEDIN_CLIENT_ID:-}
       LINKEDIN_CLIENT_SECRET: ${LINKEDIN_CLIENT_SECRET:-}
       
-      # Email
+      # Email (Required for OTP & Password Reset)
       GMAIL_USER: ${GMAIL_USER:-}
       GMAIL_PASS: ${GMAIL_PASS:-}
     depends_on:

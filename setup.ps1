@@ -136,13 +136,13 @@ if ($createAdmin -eq "y" -or $createAdmin -eq "Y") {
     Write-Host ""
 }
 Write-Host "📚 Documentation:" -ForegroundColor Cyan
-Write-Host "- README.md - General information" -ForegroundColor White
-Write-Host "- DEPLOYMENT.md - Deployment guide" -ForegroundColor White
-Write-Host "- ADMIN_GUIDE.md - Admin portal usage" -ForegroundColor White
-Write-Host "- DOCKER.md - Docker deployment" -ForegroundColor White
+Write-Host "- README.md - General information and setup" -ForegroundColor White
+Write-Host "- DEPLOYMENT.md - Production deployment guide" -ForegroundColor White
+Write-Host "- DOCKER.md - Docker deployment guide" -ForegroundColor White
 Write-Host ""
 Write-Host "🔧 Optional Configuration:" -ForegroundColor Cyan
 Write-Host "- Add Google OAuth credentials to .env" -ForegroundColor White
 Write-Host "- Add LinkedIn OAuth credentials to .env" -ForegroundColor White
-Write-Host "- Add Gmail SMTP credentials to .env" -ForegroundColor White
+Write-Host "- Add Gmail SMTP credentials to .env (Required for OTP & password reset)" -ForegroundColor White
+Write-Host "  Get app password: https://myaccount.google.com/apppasswords" -ForegroundColor Yellow
 Write-Host ""

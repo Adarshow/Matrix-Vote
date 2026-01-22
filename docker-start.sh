@@ -36,6 +36,8 @@ if [ ! -f .env ]; then
     echo "⚠️  IMPORTANT: Please edit .env file with your configuration:"
     echo "   - Set a secure DB_PASSWORD"
     echo "   - Generate NEXTAUTH_SECRET with: openssl rand -base64 32"
+    echo "   - Add Gmail credentials for OTP & password reset"
+    echo "     Get app password: https://myaccount.google.com/apppasswords"
     echo "   - Add OAuth credentials (optional)"
     echo ""
     read -p "Press Enter after you've edited .env file to continue..."
