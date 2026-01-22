@@ -393,7 +393,7 @@ export default function AdminDashboard() {
     // Title
     doc.setFontSize(20)
     doc.setFont("helvetica", "bold")
-    doc.text("White Matrix Voting Analytics Report", 14, 20)
+    doc.text("Matrix Vote Analytics Report", 14, 20)
     
     // Date
     doc.setFontSize(10)
