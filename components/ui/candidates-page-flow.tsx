@@ -182,11 +182,11 @@ export const CandidatesPageContent = ({
             >
               <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold mb-4">
                 <ShinyText
-                  text="Meet Our"
+                  text="Meet Our "
                   speed={3}
                   delay={0}
                   spread={100}
-                  className="block mb-2"
+                  className="inline-block"
                   color="#b5b5b5"
                   shineColor="#ffffff"
                 />
@@ -195,7 +195,7 @@ export const CandidatesPageContent = ({
                   speed={3}
                   delay={1}
                   spread={100}
-                  className="block"
+                  className="inline-block"
                   color="#b5b5b5"
                   shineColor="#ffffff"
                 />

@@ -9,6 +9,7 @@ import { CompactCountdown } from "@/components/compact-countdown";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
 import { useSession } from "next-auth/react";
 import { ProfileDropdown } from "@/components/ui/profile-dropdown";
+import ShinyText from "@/components/ui/ShinyText";
 
 interface VotingSettings {
   votingDeadline: string | null;
@@ -142,12 +143,25 @@ export default function AboutPageFlow() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12 sm:mb-16 lg:mb-20 pt-14"
           >
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4 sm:mb-6">
-              Transparent & Secure
-              <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60">
-                Voting Platform
-              </span>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6">
+              <ShinyText
+                text="Transparent & Secure "
+                speed={3}
+                delay={0}
+                spread={100}
+                className="inline-block"
+                color="#b5b5b5"
+                shineColor="#ffffff"
+              />
+              <ShinyText
+                text="Voting Platform"
+                speed={3}
+                delay={1}
+                spread={100}
+                className="inline-block"
+                color="#b5b5b5"
+                shineColor="#ffffff"
+              />
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               A modern, user-friendly platform designed to make democratic voting accessible, 

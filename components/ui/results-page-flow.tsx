@@ -118,10 +118,11 @@ export const ResultsPageContent = ({
     const past = new Date(dateString)
     const diffInSeconds = Math.floor((now.getTime() - past.getTime()) / 1000)
     
-    if (diffInSeconds < 60) return `${diffInSeconds} sec ago`
-    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} min ago`
-    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hr ago`
-    return `${Math.floor(diffInSeconds / 86400)} day ago`
+    if (diffInSeconds < 60) return `${diffInSeconds}s ago`
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`
+    const days = Math.floor(diffInSeconds / 86400)
+    return `${days}d ago`
   }
 
   const getProgressBarColor = (index: number) => {
@@ -219,11 +220,11 @@ export const ResultsPageContent = ({
             >
               <h1 className="text-5xl lg:text-7xl font-extrabold mb-4 leading-[1.2] pb-2">
                 <ShinyText
-                  text="Voting"
+                  text="Voting "
                   speed={3}
                   delay={0}
                   spread={100}
-                  className="block mb-2 leading-[1.2]"
+                  className="inline-block leading-[1.2]"
                   color="#b5b5b5"
                   shineColor="#ffffff"
                 />
@@ -232,7 +233,7 @@ export const ResultsPageContent = ({
                   speed={3}
                   delay={1}
                   spread={100}
-                  className="block leading-[1.2]"
+                  className="inline-block leading-[1.2]"
                   color="#b5b5b5"
                   shineColor="#ffffff"
                 />
@@ -519,9 +520,9 @@ export const ResultsPageContent = ({
                               </p>
                             </div>
                             <div className="flex flex-col items-end gap-0.5 sm:gap-1">
-                              <div className="text-[10px] sm:text-xs font-medium text-muted-foreground flex items-center gap-0.5 sm:gap-1">
-                                <Clock className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-                                <span className="hidden xs:inline">{formatTimeAgo(voter.vote.createdAt)}</span>
+                              <div className="text-[11px] sm:text-xs font-semibold text-foreground/70 flex items-center gap-1">
+                                <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                                <span>{formatTimeAgo(voter.vote.createdAt)}</span>
                               </div>
                               {voter.linkedinUrl && (
                                 <div className="w-5 h-5 sm:w-6 sm:h-6 bg-primary/10 group-hover:bg-primary rounded-md sm:rounded-lg flex items-center justify-center transition-all duration-300 opacity-0 group-hover:opacity-100">

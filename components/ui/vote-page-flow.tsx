@@ -220,11 +220,11 @@ export const VotePageContent = ({
 
               <h1 className="text-5xl lg:text-7xl font-extrabold mb-4">
                 <ShinyText
-                  text="Cast Your"
+                  text="Cast Your "
                   speed={3}
                   delay={0}
                   spread={100}
-                  className="block mb-2"
+                  className="inline-block"
                   color="#b5b5b5"
                   shineColor="#ffffff"
                 />
@@ -233,7 +233,7 @@ export const VotePageContent = ({
                   speed={3}
                   delay={1}
                   spread={100}
-                  className="block"
+                  className="inline-block"
                   color="#b5b5b5"
                   shineColor="#ffffff"
                 />

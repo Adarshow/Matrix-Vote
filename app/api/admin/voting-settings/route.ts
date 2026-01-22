@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server"
 import { jwtVerify } from "jose"
 import { prisma } from "@/lib/prisma"
 
+export const dynamic = 'force-dynamic'
+
 const JWT_SECRET = new TextEncoder().encode(
   process.env.NEXTAUTH_SECRET || "your-secret-key"
 )
@@ -76,4 +78,9 @@ export async function PUT(request: NextRequest) {
       { status: 500 }
     )
   }
+}
+
+// PATCH - Alternative update method for better compatibility
+export async function PATCH(request: NextRequest) {
+  return PUT(request)
 }
