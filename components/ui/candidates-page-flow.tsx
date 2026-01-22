@@ -39,11 +39,15 @@ export const CandidatesPageContent = ({
   const [candidates, setCandidates] = useState<Candidate[]>([])
   const [loading, setLoading] = useState(true)
   const [votingDeadline, setVotingDeadline] = useState<string | null>(null)
+  const [hasVoted, setHasVoted] = useState(false)
 
   useEffect(() => {
     fetchCandidates()
     fetchVotingDeadline()
-  }, [])
+    if (status === "authenticated") {
+      checkVoteStatus()
+    }
+  }, [status])
 
   const fetchVotingDeadline = async () => {
     try {
@@ -59,6 +63,18 @@ export const CandidatesPageContent = ({
     }
   }
 
+  const checkVoteStatus = async () => {
+    try {
+      const response = await fetch("/api/vote", { cache: "no-store" })
+      if (response.ok) {
+        const data = await response.json()
+        setHasVoted(data.hasVoted)
+      }
+    } catch (error) {
+      console.error("Failed to check vote status:", error)
+    }
+  }
+
   const fetchCandidates = async () => {
     try {
       const response = await fetch("/api/candidates", { cache: "no-store" })
@@ -71,21 +87,43 @@ export const CandidatesPageContent = ({
     }
   }
 
+  // Dynamic navbar items based on auth state and vote status
+  const getNavLeftItems = () => {
+    if (status === "unauthenticated") {
+      // CASE 1: Not logged in
+      return [
+        { name: "About", url: "/about" },
+        { name: "Candidates", url: "/candidates" },
+        { name: "Login", url: "/login" },
+        { name: "Register", url: "/register" },
+      ];
+    } else if (status === "authenticated" && !hasVoted) {
+      // CASE 2: Logged in but not voted
+      return [
+        { name: "About", url: "/about" },
+        { name: "Candidates", url: "/candidates" },
+        { name: "Vote", url: "/vote" },
+      ];
+    } else {
+      // CASE 3: Logged in and voted
+      return [
+        { name: "About", url: "/about" },
+        { name: "Candidates", url: "/candidates" },
+        { name: "Results", url: "/results" },
+      ];
+    }
+  };
+
   if (loading || status === "loading") {
     return (
       <InfiniteGridBackground className={cn("", className)}>
         <div className="relative z-10 flex flex-col min-h-screen">
           <NavBar 
-            leftItems={[
-              { name: 'About', url: '/' },
-              { name: 'Candidates', url: '/candidates' },
-              { name: 'Vote', url: '/vote' },
-              { name: 'Results', url: '/results' },
-            ]}
+            leftItems={getNavLeftItems()}
             activeItem="Candidates"
             logoSrc={logoSrc}
             companyName={companyName}
-            showAuthButtons={!session}
+            showAuthButtons={false}
             rightItems={
               <>
                 {votingDeadline && <CompactCountdown deadline={votingDeadline} />}
@@ -114,16 +152,11 @@ export const CandidatesPageContent = ({
     <InfiniteGridBackground className={cn("", className)}>
       <div className="relative z-10 flex flex-col min-h-screen">
         <NavBar 
-          leftItems={[
-            { name: 'About', url: '/' },
-            { name: 'Candidates', url: '/candidates' },
-            { name: 'Vote', url: '/vote' },
-            { name: 'Results', url: '/results' },
-          ]}
+          leftItems={getNavLeftItems()}
           activeItem="Candidates"
           logoSrc={logoSrc}
           companyName={companyName}
-          showAuthButtons={!session}
+          showAuthButtons={false}
           rightItems={
             <>
               {votingDeadline && <CompactCountdown deadline={votingDeadline} />}

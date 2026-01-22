@@ -125,9 +125,10 @@ export const CompleteProfilePage = ({
       <div className="relative z-10 flex flex-col min-h-screen">
         <NavBar 
           leftItems={[
-            { name: 'About', url: '/' },
+            { name: 'About', url: '/about' },
             { name: 'Candidates', url: '/candidates' },
-            { name: 'Results', url: '/results' },
+            { name: 'Login', url: '/login' },
+            { name: 'Register', url: '/register' },
           ]}
           logoSrc={logoSrc}
           companyName={companyName}

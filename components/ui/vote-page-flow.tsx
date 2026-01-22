@@ -48,6 +48,15 @@ export const VotePageContent = ({
   const [votingDeadline, setVotingDeadline] = useState<string | null>(null);
   const [votingClosed, setVotingClosed] = useState(false);
 
+  // Dynamic navbar items - Vote page only accessible when logged in and not voted (CASE 2)
+  const getNavLeftItems = () => {
+    return [
+      { name: "About", url: "/about" },
+      { name: "Candidates", url: "/candidates" },
+      { name: "Vote", url: "/vote" },
+    ];
+  };
+
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/login");
@@ -144,12 +153,7 @@ export const VotePageContent = ({
       <InfiniteGridBackground className={cn("", className)}>
         <div className="relative z-10 flex flex-col min-h-screen">
           <NavBar 
-            leftItems={[
-              { name: 'About', url: '/' },
-              { name: 'Candidates', url: '/candidates' },
-              { name: 'Vote', url: '/vote' },
-              { name: 'Results', url: '/results' },
-            ]}
+            leftItems={getNavLeftItems()}
             activeItem="Vote"
             logoSrc={logoSrc}
             companyName={companyName}
@@ -186,12 +190,7 @@ export const VotePageContent = ({
     <InfiniteGridBackground className={cn("", className)}>
       <div className="relative z-10 flex flex-col min-h-screen">
         <NavBar 
-          leftItems={[
-            { name: 'About', url: '/' },
-            { name: 'Candidates', url: '/candidates' },
-            { name: 'Vote', url: '/vote' },
-            { name: 'Results', url: '/results' },
-          ]}
+          leftItems={getNavLeftItems()}
           activeItem="Vote"
           logoSrc={logoSrc}
           companyName={companyName}
