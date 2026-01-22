@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# White Matrix Voting Platform - Docker Quick Start Script
+# Matrix Vote Voting Platform - Docker Quick Start Script
 # This script helps you get started with Docker deployment quickly
 
 set -e
 
 echo "===================================="
-echo "White Matrix Voting Platform"
+echo "Matrix Vote Voting Platform"
 echo "Docker Quick Start"
 echo "===================================="
 echo ""
@@ -74,7 +74,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo "✓ Admin user created!"
     echo ""
     echo "Default Admin Credentials:"
-    echo "  Email: admin@whitematrix.com"
+    echo "  Email: admin@matrixvote.com"
     echo "  Password: admin123"
     echo ""
     echo "⚠️  CHANGE THIS PASSWORD IMMEDIATELY!"

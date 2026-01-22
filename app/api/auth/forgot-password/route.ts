@@ -54,7 +54,7 @@ export async function POST(req: Request) {
           <p style="color: #6B7280; word-break: break-all;">${process.env.NEXTAUTH_URL}/reset-password?token=${resetToken}&email=${encodeURIComponent(email)}</p>
           <p style="margin-top: 30px; color: #6B7280; font-size: 14px;">If you didn't request this password reset, please ignore this email.</p>
           <hr style="border: none; border-top: 1px solid #E5E7EB; margin: 30px 0;">
-          <p style="color: #9CA3AF; font-size: 12px;">© ${new Date().getFullYear()} White Matrix. All rights reserved.</p>
+          <p style="color: #9CA3AF; font-size: 12px;">© ${new Date().getFullYear()} Matrix Vote. All rights reserved.</p>
         </div>
       `,
       text: `Hello,\n\nYou have requested to reset your password for your Matrix Vote account.\n\nClick the link below to reset your password:\n${process.env.NEXTAUTH_URL}/reset-password?token=${resetToken}&email=${encodeURIComponent(email)}\n\nIf you didn't request this password reset, please ignore this email.\n\n© ${new Date().getFullYear()} Matrix Vote. All rights reserved.`,

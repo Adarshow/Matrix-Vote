@@ -4,7 +4,7 @@ services:
   # PostgreSQL Database
   postgres:
     image: postgres:15-alpine
-    container_name: whitematrix-db
+    container_name: matrixvote-db
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
@@ -15,7 +15,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - whitematrix-network
+      - matrixvote-network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -27,7 +27,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: whitematrix-app
+    container_name: matrixvote-app
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -52,7 +52,7 @@ services:
       postgres:
         condition: service_healthy
     networks:
-      - whitematrix-network
+      - matrixvote-network
     command: >
       sh -c "
         echo 'Waiting for database...' &&
@@ -66,5 +66,5 @@ volumes:
     driver: local
 
 networks:
-  whitematrix-network:
+  matrixvote-network:
     driver: bridge

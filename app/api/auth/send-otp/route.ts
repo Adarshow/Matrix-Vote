@@ -80,7 +80,7 @@ export async function POST(req: Request) {
             </p>
             <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
             <p style="color: #999; font-size: 12px; text-align: center;">
-              © ${new Date().getFullYear()} White Matrix. All rights reserved.
+              © ${new Date().getFullYear()} Matrix Vote. All rights reserved.
             </p>
           </div>
         </div>

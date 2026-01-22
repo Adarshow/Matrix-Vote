@@ -1,8 +1,8 @@
-# White Matrix Voting Platform - Docker Quick Start Script (Windows)
+# Matrix Vote Voting Platform - Docker Quick Start Script (Windows)
 # This script helps you get started with Docker deployment quickly
 
 Write-Host "====================================" -ForegroundColor Cyan
-Write-Host "White Matrix Voting Platform" -ForegroundColor Cyan
+Write-Host "Matrix Vote Voting Platform" -ForegroundColor Cyan
 Write-Host "Docker Quick Start" -ForegroundColor Cyan
 Write-Host "====================================" -ForegroundColor Cyan
 Write-Host ""
@@ -65,7 +65,7 @@ if ($createAdmin -eq 'y' -or $createAdmin -eq 'Y') {
     Write-Host "✓ Admin user created!" -ForegroundColor Green
     Write-Host ""
     Write-Host "Default Admin Credentials:" -ForegroundColor Yellow
-    Write-Host "  Email: admin@whitematrix.com" -ForegroundColor White
+    Write-Host "  Email: admin@matrixvote.com" -ForegroundColor White
     Write-Host "  Password: admin123" -ForegroundColor White
     Write-Host ""
     Write-Host "⚠️  CHANGE THIS PASSWORD IMMEDIATELY!" -ForegroundColor Red

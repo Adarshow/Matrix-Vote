@@ -1,8 +1,8 @@
-# Quick Setup Script for White Matrix Voting Platform
+# Quick Setup Script for Matrix Vote Voting Platform
 # This script sets up the complete voting platform including admin portal
 
 Write-Host "================================================" -ForegroundColor Cyan
-Write-Host "White Matrix Voting Platform - Setup Wizard" -ForegroundColor Cyan
+Write-Host "Matrix Vote Voting Platform - Setup Wizard" -ForegroundColor Cyan
 Write-Host "================================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -107,7 +107,7 @@ if ($createAdmin -eq "y" -or $createAdmin -eq "Y") {
         Write-Host "✓ Admin user created successfully" -ForegroundColor Green
         Write-Host ""
         Write-Host "Default Admin Credentials:" -ForegroundColor Yellow
-        Write-Host "  Email: admin@whitematrix.com" -ForegroundColor White
+        Write-Host "  Email: admin@matrixvote.com" -ForegroundColor White
         Write-Host "  Password: admin123" -ForegroundColor White
         Write-Host ""
         Write-Host "⚠️  IMPORTANT: Change this password after first login!" -ForegroundColor Red
@@ -131,7 +131,7 @@ Write-Host ""
 if ($createAdmin -eq "y" -or $createAdmin -eq "Y") {
     Write-Host "👤 Admin Portal:" -ForegroundColor Cyan
     Write-Host "URL: http://localhost:3000/admin/login" -ForegroundColor White
-    Write-Host "Email: admin@whitematrix.com" -ForegroundColor White
+    Write-Host "Email: admin@matrixvote.com" -ForegroundColor White
     Write-Host "Password: admin123 (change immediately!)" -ForegroundColor White
     Write-Host ""
 }

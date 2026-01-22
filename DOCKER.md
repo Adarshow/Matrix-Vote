@@ -1,6 +1,6 @@
 # Docker Deployment Guide
 
-This guide explains how to run the White Matrix Voting Platform using Docker and Docker Compose.
+This guide explains how to run the Matrix Vote Voting Platform using Docker and Docker Compose.
 
 ## Prerequisites
 
@@ -44,7 +44,7 @@ openssl rand -base64 32
 **Get Gmail App Password:**
 1. Visit https://myaccount.google.com/apppasswords
 2. Enable 2-Step Verification first
-3. Create app password for "Mail" → "Other (White Matrix)"
+3. Create app password for "Mail" → "Other (Matrix Vote)"
 4. Copy the 16-character password (no spaces)
 
 ### 2. Build and Start
@@ -81,7 +81,7 @@ INSERT INTO "Admin" (id, name, email, password, role, "createdAt", "updatedAt")
 VALUES (
   gen_random_uuid()::text,
   'Admin',
-  'admin@whitematrix.com',
+  'admin@matrixvote.com',
   '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGa676.oa2G0B4PBgy',
   'admin',
   NOW(),
@@ -94,7 +94,7 @@ VALUES (
 
 - **Main App**: http://localhost:3000
 - **Admin Portal**: http://localhost:3000/admin/login
-  - Email: `admin@whitematrix.com`
+  - Email: `admin@matrixvote.com`
   - Password: `admin123`
 
 ⚠️ **Change the default password immediately!**
@@ -232,19 +232,19 @@ Build and push to Docker Hub:
 
 ```bash
 # Build for production
-docker build -t yourusername/whitematrix-voting:latest .
+docker build -t yourusername/matrixvote-voting:latest .
 
 # Push to Docker Hub
 docker login
-docker push yourusername/whitematrix-voting:latest
+docker push yourusername/matrixvote-voting:latest
 
 # Pull and run on server
-docker pull yourusername/whitematrix-voting:latest
+docker pull yourusername/matrixvote-voting:latest
 docker run -d \
   -p 3000:3000 \
   -e DATABASE_URL="your_db_url" \
   -e NEXTAUTH_SECRET="your_secret" \
-  yourusername/whitematrix-voting:latest
+  yourusername/matrixvote-voting:latest
 ```
 
 ## Troubleshooting
@@ -398,7 +398,7 @@ DOCKER_BUILDKIT=1 docker-compose build
 
 ### Multi-platform Builds
 ```bash
-docker buildx build --platform linux/amd64,linux/arm64 -t whitematrix-voting .
+docker buildx build --platform linux/amd64,linux/arm64 -t matrixvote-voting .
 ```
 
 ### Resource Limits
@@ -426,7 +426,7 @@ services:
 
 4. **Scan images for vulnerabilities**
    ```bash
-   docker scan whitematrix-voting
+   docker scan matrixvote-voting
    ```
 
 5. **Keep containers updated**

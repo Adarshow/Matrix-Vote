@@ -169,7 +169,7 @@ export default function AboutPageFlow() {
             </p>
           </motion.div>
 
-          {/* What is White Matrix Section */}
+          {/* What is Matrix Vote Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -415,7 +415,7 @@ export default function AboutPageFlow() {
                   Ready to Make Your Voice Heard?
                 </h2>
                 <p className="text-sm sm:text-base text-muted-foreground mb-6 leading-relaxed">
-                  Join thousands of voters who trust White Matrix for secure and transparent elections. 
+                  Join thousands of voters who trust Matrix Vote for secure and transparent elections. 
                   Register now and participate in shaping the future.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">

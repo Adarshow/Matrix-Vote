@@ -1,4 +1,4 @@
-# Deployment Guide - White Matrix Voting Platform
+# Deployment Guide - Matrix Vote Voting Platform
 
 ## Quick Deployment to Vercel + Supabase
 
@@ -10,7 +10,7 @@
 
 2. **Create New Project**
    - Click "New Project"
-   - Name: `white-matrix-voting`
+   - Name: `Matrix-Vote`
    - Database Password: (save this securely)
    - Region: Choose closest to your users
    - Click "Create new project"
@@ -33,7 +33,7 @@
    ```bash
    git init
    git add .
-   git commit -m "White Matrix Voting Platform"
+   git commit -m "Matrix-Vote Voting Platform"
    git branch -M main
    git remote add origin YOUR_GITHUB_REPO_URL
    git push -u origin main
@@ -68,7 +68,7 @@
    **How to get Gmail App Password:**
    1. Go to https://myaccount.google.com/apppasswords
    2. Enable 2-Step Verification first if not enabled
-   3. Create app password for "Mail" → "Other (White Matrix)"
+   3. Create app password for "Mail" → "Other (Matrix Vote)"
    4. Copy the 16-character password (remove spaces)
    5. Add to Vercel environment variables
 
@@ -141,7 +141,7 @@
    VALUES (
      gen_random_uuid()::text,
      'Admin',
-     'admin@whitematrix.com',
+     'admin@matrixvote.com',
      '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGa676.oa2G0B4PBgy',
      'admin',
      NOW(),
@@ -152,7 +152,7 @@
    
    **Default Admin Credentials:**
    - URL: `https://your-project.vercel.app/admin/login`
-   - Email: `admin@whitematrix.com`
+   - Email: `admin@matrixvote.com`
    - Password: `admin123`
    
    ⚠️ **CRITICAL**: Change the password immediately after first login!
@@ -225,7 +225,7 @@
 
 2. **Create Project**
    - Click "Create Project"
-   - Name: `white-matrix-voting`
+   - Name: `Matrix-vote`
    - Region: Choose closest
 
 3. **Get Connection String**
@@ -294,4 +294,4 @@ For issues or questions:
 
 ---
 
-**Your White Matrix Voting Platform is now live! 🎉**
+**Your Matrix Vote Voting Platform is now live! 🎉**

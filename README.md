@@ -1,6 +1,39 @@
 # Matrix Vote: Online Voting Platform
 
-## 📋 Project Overview
+## � Table of Contents
+
+- [Project Overview](#-project-overview)
+- [Features](#-features)
+  - [Core Functionality](#core-functionality)
+  - [Additional Features](#additional-features)
+  - [Admin Dashboard](#admin-dashboard)
+- [Tech Stack](#️-tech-stack)
+  - [Frontend + Backend](#frontend--backend)
+  - [Authentication](#authentication)
+  - [Email Functionality](#email-functionality)
+  - [Database](#database)
+  - [Deployment](#deployment)
+- [Project Structure](#-project-structure)
+- [Getting Started](#-getting-started)
+  - [Docker Setup](#option-1-docker-recommended-for-quick-start)
+  - [Automated Local Setup](#option-2-automated-local-setup-windows)
+  - [Manual Setup](#option-3-manual-setup)
+- [OAuth Setup](#-oauth-setup-optional)
+- [Admin Setup for Production](#-admin-setup-for-production)
+- [Available Scripts](#-available-scripts)
+- [Database Schema](#-database-schema)
+- [Usage Flow](#-usage-flow)
+  - [For Public Users](#for-public-users-not-logged-in)
+  - [For Voters](#for-voters)
+  - [For Administrators](#for-administrators)
+- [Security Features](#-security-features)
+- [UI/UX Features](#-uiux-features)
+- [License](#-license)
+- [Author](#-author)
+
+---
+
+## �📋 Project Overview
 
 A secure, production-ready online voting platform built for the White Matrix Internship Machine Test (December 2025). This platform enables authenticated users to vote for their preferred candidate exactly once, with real-time results and comprehensive voter tracking.
 
@@ -309,7 +342,7 @@ This interactive wizard will guide you through the entire setup process includin
    1. Go to your Google Account settings
    2. Enable 2-Step Verification if not already enabled
    3. Visit https://myaccount.google.com/apppasswords
-   4. Select "Mail" and "Other (Custom name)", enter "White Matrix"
+   4. Select "Mail" and "Other (Custom name)", enter "Matrix Vote"
    5. Copy the 16-character password (no spaces)
    6. Paste it as GMAIL_PASS in .env
 
@@ -332,7 +365,7 @@ This interactive wizard will guide you through the entire setup process includin
    ```
    
    **Default Admin Credentials:**
-   - Email: `admin@whitematrix.com`
+   - Email: `admin@matrixvote.com`
    - Password: `admin123`
    
    ⚠️ **IMPORTANT**: Change the admin password immediately after first login!
@@ -404,7 +437,7 @@ INSERT INTO "Admin" (id, name, email, password, role, "createdAt", "updatedAt")
 VALUES (
   gen_random_uuid()::text,
   'Admin',
-  'admin@whitematrix.com',
+  'admin@matrixvote.com',
   '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGa676.oa2G0B4PBgy',
   'admin',
   NOW(),
@@ -414,7 +447,7 @@ ON CONFLICT (email) DO NOTHING;
 ```
 
 **Default Admin Credentials:**
-- Email: `admin@whitematrix.com`
+- Email: `admin@matrixvote.com`
 - Password: `admin123`
 
 ⚠️ **Change this password immediately after first login using the Change Password feature!**
@@ -434,7 +467,7 @@ Then update the password in your database:
 ```sql
 UPDATE "Admin" 
 SET password = 'your_bcrypt_hash_here'
-WHERE email = 'admin@whitematrix.com';
+WHERE email = 'admin@matrixvote.com';
 ```
 
 ## � Available Scripts
