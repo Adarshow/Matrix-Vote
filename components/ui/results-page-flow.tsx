@@ -477,7 +477,7 @@ export const ResultsPageContent = ({
                     </div>
                   ) : (
                     <div className="space-y-2 sm:space-y-3 max-h-[320px] sm:max-h-[380px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent hover:scrollbar-thumb-primary/40">
-                      {voters.slice(0, 5).map((voter, index) => {
+                      {voters.map((voter, index) => {
                         if (!voter.vote || !voter.vote.candidate) return null
                         
                         const formatDateTime = (dateString: string) => {
